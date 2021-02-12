@@ -7,6 +7,8 @@ using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
+#include <ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <ext/matrix_clip_space.hpp> // glm::perspective
 using namespace glm;
 
 #pragma once
@@ -15,8 +17,10 @@ class Renderer
 {
 	public:
 		enum ShaderType { VERTEX, FRAGMENT };
+
 		static GLFWwindow* window;
-		static GLuint currentProgram;
+		static GLuint program;
+		static int windowWidth, windowHeight;
 
 		static void CreateWindow(int width, int height, const char* title);
 		static void Start();

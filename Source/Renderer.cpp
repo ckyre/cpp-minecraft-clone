@@ -1,10 +1,15 @@
 #include "Renderer.h"
 
 GLFWwindow* Renderer::window;
-GLuint Renderer::currentProgram;
+GLuint Renderer::program;
+int Renderer::windowWidth;
+int Renderer::windowHeight;
 
 void Renderer::CreateWindow(int width, int height, const char* title)
 {
+	windowWidth = width;
+	windowHeight = height;
+
     // OpenGL hints
     glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // On veut OpenGL 3.3
@@ -26,14 +31,25 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 
 void Renderer::Start()
 {
-	currentProgram = LoadShaders("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
+	program = LoadShaders("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
 		        "E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
 }
 
 void Renderer::Update()
 {
 	// Bind shader
-	glUseProgram(currentProgram);
+	glUseProgram(program);
+
+	// Calculate matrices
+	mat4 proj = glm::perspective(radians(45.0f), float(windowWidth/windowHeight), 0.1f, 100.0f);
+	mat4 view = glm::lookAt(vec3(4, 3, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+	mat4 model = mat4(1.0f);
+
+	mat4 mvp = proj * view * model;
+
+	// Send mvp to shader
+	GLuint mvpUniform = glGetUniformLocation(program, "mvp");
+	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
 
     // VOA
     GLuint vertexArray;
