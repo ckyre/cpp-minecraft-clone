@@ -13,18 +13,19 @@ using namespace glm;
 
 int main()
 {
+    // Initalise GLFW
     if (!glfwInit())
     {
         fprintf(stderr, "Failed to initialize GLFW\n");
         return -1;
     }
 
-    static Renderer renderer;
-    renderer.CreateWindow(1024, 768, "Minecraft clone");
-    renderer.Start();
+    Renderer::CreateWindow(1024, 768, "Minecraft clone");
 
     // Créer un contexte OpenGL
-    glfwMakeContextCurrent(renderer.window);
+    glfwMakeContextCurrent(Renderer::window);
+
+    // Initalise GLEW
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
     {
@@ -32,20 +33,22 @@ int main()
         return -1;
     }
 
-    // Assure que l'on peut capturer la touche d'échappement enfoncée ci-dessous
-    glfwSetInputMode(renderer.window, GLFW_STICKY_KEYS, GL_TRUE);
+    Renderer::Start();
 
     // Boucle principale
-    while (glfwGetKey(renderer.window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(renderer.window) == 0)
+    while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
     {
-        renderer.Update();
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        Renderer::Update();
 
         // Swap buffers
-        glfwSwapBuffers(renderer.window);
+        glfwSwapBuffers(Renderer::window);
         glfwPollEvents();
     }
 
-    renderer.End();
+    Renderer::End();
 
     return 0;
 }
