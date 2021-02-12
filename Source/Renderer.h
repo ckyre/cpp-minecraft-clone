@@ -10,7 +10,9 @@ using namespace std;
 #include <ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 #include <ext/matrix_clip_space.hpp> // glm::perspective
 using namespace glm;
-
+#include "Buffer.h";
+#include "BufferLayout.h";
+#include "Texture.h";
 #pragma once
 
 class Renderer
@@ -26,8 +28,11 @@ class Renderer
 		static void Start();
 		static void Update();
 		static void End();
+		static void DrawCube(vec3 position);
 		static GLuint LoadShaders(const char* vertexShaderPath, const char* fragmentShaderPath);
+		static mat4 CalculateMVP(vec3 modelPosition);
 	private:
+		static int drawBufferSize;
 		static GLuint CreateShader(ShaderType type, const char* path);
 };
 

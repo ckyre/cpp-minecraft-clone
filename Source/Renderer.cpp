@@ -1,9 +1,11 @@
 #include "Renderer.h"
 
 GLFWwindow* Renderer::window;
-GLuint Renderer::program;
 int Renderer::windowWidth;
 int Renderer::windowHeight;
+
+GLuint Renderer::program;
+int Renderer::drawBufferSize;
 
 void Renderer::CreateWindow(int width, int height, const char* title)
 {
@@ -16,6 +18,13 @@ void Renderer::CreateWindow(int width, int height, const char* title)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Pour rendre MacOS heureux ; ne devrait pas être nécessaire
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // On ne veut pas l'ancien OpenGL
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+	// Mip maps settings
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
     // Ouvre une fenêtre
     window = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -33,55 +42,127 @@ void Renderer::Start()
 {
 	program = LoadShaders("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
 		        "E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
+
+	// VOA
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
 }
 
 void Renderer::Update()
 {
-	// Bind shader
+	drawBufferSize = 0;
 	glUseProgram(program);
 
-	// Calculate matrices
-	mat4 proj = glm::perspective(radians(45.0f), float(windowWidth/windowHeight), 0.1f, 100.0f);
-	mat4 view = glm::lookAt(vec3(4, 3, 3), vec3(0, 0, 0), vec3(0, 1, 0));
-	mat4 model = mat4(1.0f);
+	DrawCube(vec3(0, 0, 0));
 
-	mat4 mvp = proj * view * model;
+	static const GLfloat uvs[] = {
+		0.000059f, 1.0f - 0.000004f,
+		0.000103f, 1.0f - 0.336048f,
+		0.335973f, 1.0f - 0.335903f,
+		1.000023f, 1.0f - 0.000013f,
+		0.667979f, 1.0f - 0.335851f,
+		0.999958f, 1.0f - 0.336064f,
+		0.667979f, 1.0f - 0.335851f,
+		0.336024f, 1.0f - 0.671877f,
+		0.667969f, 1.0f - 0.671889f,
+		1.000023f, 1.0f - 0.000013f,
+		0.668104f, 1.0f - 0.000013f,
+		0.667979f, 1.0f - 0.335851f,
+		0.000059f, 1.0f - 0.000004f,
+		0.335973f, 1.0f - 0.335903f,
+		0.336098f, 1.0f - 0.000071f,
+		0.667979f, 1.0f - 0.335851f,
+		0.335973f, 1.0f - 0.335903f,
+		0.336024f, 1.0f - 0.671877f,
+		1.000004f, 1.0f - 0.671847f,
+		0.999958f, 1.0f - 0.336064f,
+		0.667979f, 1.0f - 0.335851f,
+		0.668104f, 1.0f - 0.000013f,
+		0.335973f, 1.0f - 0.335903f,
+		0.667979f, 1.0f - 0.335851f,
+		0.335973f, 1.0f - 0.335903f,
+		0.668104f, 1.0f - 0.000013f,
+		0.336098f, 1.0f - 0.000071f,
+		0.000103f, 1.0f - 0.336048f,
+		0.000004f, 1.0f - 0.671870f,
+		0.336024f, 1.0f - 0.671877f,
+		0.000103f, 1.0f - 0.336048f,
+		0.336024f, 1.0f - 0.671877f,
+		0.335973f, 1.0f - 0.335903f,
+		0.667969f, 1.0f - 0.671889f,
+		1.000004f, 1.0f - 0.671847f,
+		0.667979f, 1.0f - 0.335851f
+	};
+	Buffer uvsBuffer(uvs, sizeof(uvs));
 
-	// Send mvp to shader
-	GLuint mvpUniform = glGetUniformLocation(program, "mvp");
-	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
-
-    // VOA
-    GLuint vertexArray;
-    glGenVertexArrays(1, &vertexArray);
-    glBindVertexArray(vertexArray);
-
-    // VB
-    static const GLfloat vertices[] = {
-       -1.0f, -1.0f, 0.0f,
-       1.0f, -1.0f, 0.0f,
-       0.0f,  1.0f, 0.0f,
-    };
-    GLuint vertexbuffer;
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-
-    // Send data to VB
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Layout
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-    // Draw
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glDisableVertexAttribArray(0);
+	BufferLayout::UseDefaultLayout();
+	glDrawArrays(GL_TRIANGLES, 0, drawBufferSize);
 }
 
 void Renderer::End()
 {
+}
+
+void Renderer::DrawCube(vec3 position)
+{
+	// Vertex buffer
+	static GLfloat vertices[] = {
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f
+	};
+	Buffer vertexBuffer(vertices, sizeof(vertices));
+
+	// MVP
+	mat4 mvp = CalculateMVP(position);
+	GLuint mvpUniform = glGetUniformLocation(program, "mvp");
+	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
+
+	drawBufferSize += sizeof(vertices);
+}
+
+mat4 Renderer::CalculateMVP(vec3 modelPosition)
+{
+	mat4 proj = glm::perspective(radians(45.0f), float(windowWidth / windowHeight), 0.1f, 100.0f);
+	mat4 view = glm::lookAt(vec3(4, 3, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+	mat4 model = mat4(1.0f); // TODO : with modelPosition
+	return (proj * view * model);
 }
 
 GLuint Renderer::LoadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
