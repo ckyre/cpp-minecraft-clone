@@ -13,6 +13,7 @@ using namespace glm;
 #include "Buffer.h"
 #include "Texture.h"
 #include "Camera.h"
+#include "Mesh.h"
 #pragma once
 
 // https://learnopengl.com/img/model_loading/assimp_structure.png
@@ -23,8 +24,9 @@ class Renderer
 		enum ShaderType { VERTEX, FRAGMENT };
 
 		static GLFWwindow* window;
+		static GLFWmonitor* monitor;
+		static int windowWidth, windowHeight, screenWidth, screenHeight;
 		static GLuint program;
-		static int windowWidth, windowHeight;
 		static float time, deltaTime;
 		static Camera camera;
 
@@ -39,6 +41,8 @@ class Renderer
 		static int drawBufferSize;
 		static float lastTime;
 		static GLuint CreateShader(ShaderType type, const char* path);
+
+		static Mesh mesh;
 };
 
 

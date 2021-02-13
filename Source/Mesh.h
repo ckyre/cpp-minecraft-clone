@@ -16,13 +16,15 @@ class Mesh
 		Mesh(const char* path);
 		bool Load(const char* path);
 
-		vector<vec3> GetVerticesPositions();
-		vector<vec3> GetVerticesUVs();
-		vector<vec3> GetVerticesNormals();
+		GLfloat* GetVerticesPositions();
+		GLfloat* GetVerticesUVs();
+		GLfloat* GetVerticesNormals();
+		int GetPositionsCount();
+		int GetUVsCount();
 	private:
-		vector<vec3> positions;
-		vector<vec3> uvs;
-		vector<vec3> normals;
+		vector<GLfloat> positions;
+		vector<GLfloat> uvs;
+		vector<GLfloat> normals;
 
 		void Clear();
 

@@ -1,8 +1,11 @@
 #include "Renderer.h"
 
 GLFWwindow* Renderer::window;
+GLFWmonitor* Renderer::monitor;
 int Renderer::windowWidth;
 int Renderer::windowHeight;
+int Renderer::screenWidth;
+int Renderer::screenHeight;
 
 float Renderer::time;
 float Renderer::deltaTime;
@@ -12,6 +15,8 @@ Camera Renderer::camera;
 GLuint Renderer::program;
 int Renderer::drawBufferSize;
 float Renderer::lastTime;
+
+Mesh Renderer::mesh("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/cube.obj");
 
 void Renderer::CreateWindow(int width, int height, const char* title)
 {
@@ -25,20 +30,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Pour rendre MacOS heureux ; ne devrait pas être nécessaire
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // On ne veut pas l'ancien OpenGL
 
-	// Depth buffering
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-
-	// Backface culling
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
-	glEnable(GL_CULL_FACE);
-
-	// Mip maps settings
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-    // Ouvre une fenêtre
+    // Ouvre une fenêtre et la centre
     window = glfwCreateWindow(width, height, title, NULL, NULL);
     if (window == NULL)
     {
@@ -46,8 +38,14 @@ void Renderer::CreateWindow(int width, int height, const char* title)
         glfwTerminate();
     }
 
+	monitor = glfwGetPrimaryMonitor();
+	screenWidth = glfwGetVideoMode(monitor)->width;
+	screenHeight = glfwGetVideoMode(monitor)->height;
+	glfwSetWindowPos(window, (screenWidth/2) - (windowWidth/2), (screenHeight/2) - (windowHeight/2));
+
     // Assure que l'on peut capturer la touche d'échappement enfoncée ci-dessous
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
 }
 
 void Renderer::Start()
@@ -69,61 +67,32 @@ void Renderer::Start()
 void Renderer::Update()
 {
 	// Prepare frame
-	drawBufferSize = 0;
-	glUseProgram(program);
+	// Mip maps settings
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	// Depth buffering
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	// Backface culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+	// Update static time values
 	time = (float)glfwGetTime();
 	deltaTime = float(time - lastTime);
-
 	// Update camera matrices
 	camera.computeMatrices();
 
+	drawBufferSize = 0;
+	glUseProgram(program);
+
 	// Load geometry and uniforms
 	DrawCube(vec3(0, 0, 0));
-	static const GLfloat uvs[] = {
-		0.000059f, 1.0f - 0.000004f,
-		0.000103f, 1.0f - 0.336048f,
-		0.335973f, 1.0f - 0.335903f,
-		1.000023f, 1.0f - 0.000013f,
-		0.667979f, 1.0f - 0.335851f,
-		0.999958f, 1.0f - 0.336064f,
-		0.667979f, 1.0f - 0.335851f,
-		0.336024f, 1.0f - 0.671877f,
-		0.667969f, 1.0f - 0.671889f,
-		1.000023f, 1.0f - 0.000013f,
-		0.668104f, 1.0f - 0.000013f,
-		0.667979f, 1.0f - 0.335851f,
-		0.000059f, 1.0f - 0.000004f,
-		0.335973f, 1.0f - 0.335903f,
-		0.336098f, 1.0f - 0.000071f,
-		0.667979f, 1.0f - 0.335851f,
-		0.335973f, 1.0f - 0.335903f,
-		0.336024f, 1.0f - 0.671877f,
-		1.000004f, 1.0f - 0.671847f,
-		0.999958f, 1.0f - 0.336064f,
-		0.667979f, 1.0f - 0.335851f,
-		0.668104f, 1.0f - 0.000013f,
-		0.335973f, 1.0f - 0.335903f,
-		0.667979f, 1.0f - 0.335851f,
-		0.335973f, 1.0f - 0.335903f,
-		0.668104f, 1.0f - 0.000013f,
-		0.336098f, 1.0f - 0.000071f,
-		0.000103f, 1.0f - 0.336048f,
-		0.000004f, 1.0f - 0.671870f,
-		0.336024f, 1.0f - 0.671877f,
-		0.000103f, 1.0f - 0.336048f,
-		0.336024f, 1.0f - 0.671877f,
-		0.335973f, 1.0f - 0.335903f,
-		0.667969f, 1.0f - 0.671889f,
-		1.000004f, 1.0f - 0.671847f,
-		0.667979f, 1.0f - 0.335851f
-	};
-	Buffer uvsBuffer(uvs, sizeof(uvs));
-	
-	// Layout
-	glEnableVertexAttribArray(0); // Position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	Buffer uvsBuffer(mesh.GetVerticesUVs(), mesh.GetUVsCount() * sizeof(GLfloat));
+	drawBufferSize += mesh.GetUVsCount() * sizeof(GLfloat);
 	glEnableVertexAttribArray(1); // UVs
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const void*)0);
 
 	// Draw call
 	glDrawArrays(GL_TRIANGLES, 0, drawBufferSize);
@@ -139,7 +108,7 @@ void Renderer::End()
 void Renderer::DrawCube(vec3 position)
 {
 	// Vertex buffer
-	static GLfloat vertices[] = {
+	/*static GLfloat vertices[] = {
 		-1.0f,-1.0f,-1.0f,
 		-1.0f,-1.0f, 1.0f,
 		-1.0f, 1.0f, 1.0f,
@@ -176,15 +145,21 @@ void Renderer::DrawCube(vec3 position)
 		1.0f, 1.0f, 1.0f,
 		-1.0f, 1.0f, 1.0f,
 		1.0f,-1.0f, 1.0f
-	};
-	Buffer vertexBuffer(vertices, sizeof(vertices));
+	};*/
+
+	int size = mesh.GetPositionsCount() * sizeof(GLfloat);
+	Buffer vertexBuffer(mesh.GetVerticesPositions(), size);
+
+	// Layout
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void*)0);
 
 	// MVP
 	mat4 mvp = CalculateMVP(position);
 	GLuint mvpUniform = glGetUniformLocation(program, "mvp");
 	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
 
-	drawBufferSize += sizeof(vertices);
+	drawBufferSize += size;
 }
 
 mat4 Renderer::CalculateMVP(vec3 modelPosition)
