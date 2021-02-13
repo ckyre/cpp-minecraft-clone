@@ -33,7 +33,7 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\glm\detail\glm.cpp">
+    <ClCompile Include="Dependencies\glm\glm\detail\glm.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
