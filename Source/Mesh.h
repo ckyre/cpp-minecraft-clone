@@ -3,11 +3,11 @@
 using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <Importer.hpp>
-#include <scene.h>
-#include <postprocess.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 using namespace Assimp;
-#include <glm.hpp>
+#include <glm/glm.hpp>
 using namespace glm;
 #pragma once
 class Mesh
@@ -23,6 +23,8 @@ class Mesh
 		vector<vec3> positions;
 		vector<vec3> uvs;
 		vector<vec3> normals;
+
+		void Clear();
 
 };
 

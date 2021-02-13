@@ -6,9 +6,9 @@
 using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 using namespace glm;
-#include "Renderer.h";
+#include "Renderer.h"
 
 int main()
 {

@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Renderer.h";
+#include "Renderer.h"
 
 void Camera::computeMatrices()
 {

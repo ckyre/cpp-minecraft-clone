@@ -71,7 +71,7 @@ void Renderer::Update()
 	// Prepare frame
 	drawBufferSize = 0;
 	glUseProgram(program);
-	time = glfwGetTime();
+	time = (float)glfwGetTime();
 	deltaTime = float(time - lastTime);
 
 	// Update camera matrices
@@ -247,7 +247,6 @@ GLuint Renderer::CreateShader(Renderer::ShaderType type, const char* path)
 	else
 	{
 		printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", path);
-		getchar();
 		return 0;
 	}
 

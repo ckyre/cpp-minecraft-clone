@@ -6,13 +6,13 @@
 using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm.hpp>
-#include <ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
-#include <ext/matrix_clip_space.hpp> // glm::perspective
+#include <glm/glm.hpp>
+#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <glm/ext/matrix_clip_space.hpp> // glm::perspective
 using namespace glm;
-#include "Buffer.h";
-#include "Texture.h";
-#include "Camera.h";
+#include "Buffer.h"
+#include "Texture.h"
+#include "Camera.h"
 #pragma once
 
 // https://learnopengl.com/img/model_loading/assimp_structure.png
