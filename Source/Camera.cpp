@@ -18,13 +18,13 @@ void Camera::computeMatrices()
 	up = cross(right, forward);
 
 	// Move position
-	if (glfwGetKey(Renderer::window, GLFW_KEY_UP) == GLFW_PRESS) // Forward
+	if (glfwGetKey(Renderer::window, GLFW_KEY_W) == GLFW_PRESS) // Forward
 		position += forward * Renderer::deltaTime * speed;
-	if (glfwGetKey(Renderer::window, GLFW_KEY_DOWN) == GLFW_PRESS) // Backward
+	if (glfwGetKey(Renderer::window, GLFW_KEY_S) == GLFW_PRESS) // Backward
 		position -= forward * Renderer::deltaTime * speed;
-	if (glfwGetKey(Renderer::window, GLFW_KEY_RIGHT) == GLFW_PRESS) // Right
+	if (glfwGetKey(Renderer::window, GLFW_KEY_D) == GLFW_PRESS) // Right
 		position += right * Renderer::deltaTime * speed;
-	if (glfwGetKey(Renderer::window, GLFW_KEY_LEFT) == GLFW_PRESS) // Left
+	if (glfwGetKey(Renderer::window, GLFW_KEY_A) == GLFW_PRESS) // Left
 		position -= right * Renderer::deltaTime * speed;
 
 	// Calculate matices

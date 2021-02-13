@@ -16,7 +16,7 @@ GLuint Renderer::program;
 int Renderer::drawBufferSize;
 float Renderer::lastTime;
 
-Mesh Renderer::mesh("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/cube.obj");
+Mesh Renderer::mesh("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/sphere.obj");
 
 void Renderer::CreateWindow(int width, int height, const char* title)
 {
@@ -43,7 +43,6 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 	screenHeight = glfwGetVideoMode(monitor)->height;
 	glfwSetWindowPos(window, (screenWidth/2) - (windowWidth/2), (screenHeight/2) - (windowHeight/2));
 
-    // Assure que l'on peut capturer la touche d'échappement enfoncée ci-dessous
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 }
@@ -61,7 +60,7 @@ void Renderer::Start()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
+	Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");
 }
 
 void Renderer::Update()
