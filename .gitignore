@@ -1,5 +1,4 @@
 .vs
 Debug/
 Release/
-x64/
-!assimp-vc142-mtd.dll
+x64/*
