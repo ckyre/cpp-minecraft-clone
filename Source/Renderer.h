@@ -15,6 +15,8 @@ using namespace glm;
 #include "Camera.h";
 #pragma once
 
+// https://learnopengl.com/img/model_loading/assimp_structure.png
+
 class Renderer
 {
 	public:

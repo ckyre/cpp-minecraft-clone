@@ -2,19 +2,15 @@
 
 Buffer::Buffer(const GLfloat data[], const int dataSize)
 {
-	Create();
+	size = 0;
+	glGenBuffers(1, &id);
 	Fill(data, dataSize);
 }
 
-void Buffer::Create()
-{
-	size = 0;
-	glGenBuffers(1, &id);
-}
-
-void Buffer::Bind()
+GLuint Buffer::Bind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, id);
+	return id;
 }
 
 void Buffer::Unbind()

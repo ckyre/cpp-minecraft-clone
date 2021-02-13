@@ -22,7 +22,7 @@ class Camera
 		float horizontalAngle = 3.14f;
 		float verticalAngle = 0.0f;
 		float speed = 3.0f;
-		float sensivity = 0.05f;
+		float sensivity = 0.08f;
 		mat4 proj, view;
 };
 

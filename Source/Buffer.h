@@ -12,13 +12,13 @@ class Buffer
 {
 	public:
 		Buffer(const GLfloat data[], const int dataSize);
-		void Bind();
+		GLuint Bind();
 		void Unbind();
 		void Fill(const GLfloat data[], const int dataSize);
+
 		GLuint GetId();
 		int GetSize();
 	private:
-		void Create();
 		GLuint id;
 		int size;
 };

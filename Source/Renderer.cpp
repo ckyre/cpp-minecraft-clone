@@ -25,8 +25,14 @@ void Renderer::CreateWindow(int width, int height, const char* title)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Pour rendre MacOS heureux ; ne devrait pas être nécessaire
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // On ne veut pas l'ancien OpenGL
 
+	// Depth buffering
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
+	// Backface culling
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
 
 	// Mip maps settings
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -47,6 +53,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 void Renderer::Start()
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glfwSetCursorPos(Renderer::window, (double)(Renderer::windowWidth / 2), (double)(Renderer::windowHeight / 2)); // Place cursor at center
 
 	program = LoadShaders("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
 		                  "E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
@@ -56,7 +63,7 @@ void Renderer::Start()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	//Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
+	Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
 }
 
 void Renderer::Update()
@@ -72,7 +79,7 @@ void Renderer::Update()
 
 	// Load geometry and uniforms
 	DrawCube(vec3(0, 0, 0));
-	/*static const GLfloat uvs[] = {
+	static const GLfloat uvs[] = {
 		0.000059f, 1.0f - 0.000004f,
 		0.000103f, 1.0f - 0.336048f,
 		0.335973f, 1.0f - 0.335903f,
@@ -109,14 +116,14 @@ void Renderer::Update()
 		0.667969f, 1.0f - 0.671889f,
 		1.000004f, 1.0f - 0.671847f,
 		0.667979f, 1.0f - 0.335851f
-	};*/
-	//Buffer uvsBuffer(uvs, sizeof(uvs));
+	};
+	Buffer uvsBuffer(uvs, sizeof(uvs));
 	
 	// Layout
 	glEnableVertexAttribArray(0); // Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	//glEnableVertexAttribArray(1); // UVs
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1); // UVs
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Draw call
 	glDrawArrays(GL_TRIANGLES, 0, drawBufferSize);
