@@ -11,7 +11,6 @@ using namespace glm;
 class Buffer
 {
 	public:
-		Buffer();
 		Buffer(const GLfloat data[], const int dataSize);
 		void Bind();
 		void Unbind();

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 #include <string>
 using namespace std;
@@ -7,7 +8,6 @@ using namespace std;
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
 using namespace glm;
-#define STB_IMAGE_IMPLEMENTATION
 #include "Renderer.h";
 
 int main()
@@ -37,7 +37,6 @@ int main()
     // Boucle principale
     while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
     {
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         Renderer::Update();

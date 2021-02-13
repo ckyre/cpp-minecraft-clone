@@ -11,8 +11,8 @@ using namespace std;
 #include <ext/matrix_clip_space.hpp> // glm::perspective
 using namespace glm;
 #include "Buffer.h";
-#include "BufferLayout.h";
 #include "Texture.h";
+#include "Camera.h";
 #pragma once
 
 class Renderer
@@ -23,6 +23,8 @@ class Renderer
 		static GLFWwindow* window;
 		static GLuint program;
 		static int windowWidth, windowHeight;
+		static float time, deltaTime;
+		static Camera camera;
 
 		static void CreateWindow(int width, int height, const char* title);
 		static void Start();
@@ -33,6 +35,8 @@ class Renderer
 		static mat4 CalculateMVP(vec3 modelPosition);
 	private:
 		static int drawBufferSize;
+		static float lastTime;
 		static GLuint CreateShader(ShaderType type, const char* path);
 };
+
 

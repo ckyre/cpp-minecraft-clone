@@ -1,10 +1,5 @@
 #include "Buffer.h"
 
-Buffer::Buffer()
-{
-	Create();
-}
-
 Buffer::Buffer(const GLfloat data[], const int dataSize)
 {
 	Create();

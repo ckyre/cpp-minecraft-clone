@@ -6,6 +6,7 @@ using namespace std;
 #include <glm.hpp>
 #include "stb_image.h"
 #pragma once
+
 class Texture
 {
 	public:

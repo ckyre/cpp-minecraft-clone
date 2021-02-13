@@ -4,8 +4,14 @@ GLFWwindow* Renderer::window;
 int Renderer::windowWidth;
 int Renderer::windowHeight;
 
+float Renderer::time;
+float Renderer::deltaTime;
+
+Camera Renderer::camera;
+
 GLuint Renderer::program;
 int Renderer::drawBufferSize;
+float Renderer::lastTime;
 
 void Renderer::CreateWindow(int width, int height, const char* title)
 {
@@ -40,25 +46,33 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 
 void Renderer::Start()
 {
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
 	program = LoadShaders("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
-		        "E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
+		                  "E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
 
 	// VOA
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
+	//Texture texture("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/wood.jpg");
 }
 
 void Renderer::Update()
 {
+	// Prepare frame
 	drawBufferSize = 0;
 	glUseProgram(program);
+	time = glfwGetTime();
+	deltaTime = float(time - lastTime);
 
+	// Update camera matrices
+	camera.computeMatrices();
+
+	// Load geometry and uniforms
 	DrawCube(vec3(0, 0, 0));
-
-	static const GLfloat uvs[] = {
+	/*static const GLfloat uvs[] = {
 		0.000059f, 1.0f - 0.000004f,
 		0.000103f, 1.0f - 0.336048f,
 		0.335973f, 1.0f - 0.335903f,
@@ -95,11 +109,20 @@ void Renderer::Update()
 		0.667969f, 1.0f - 0.671889f,
 		1.000004f, 1.0f - 0.671847f,
 		0.667979f, 1.0f - 0.335851f
-	};
-	Buffer uvsBuffer(uvs, sizeof(uvs));
+	};*/
+	//Buffer uvsBuffer(uvs, sizeof(uvs));
+	
+	// Layout
+	glEnableVertexAttribArray(0); // Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	//glEnableVertexAttribArray(1); // UVs
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	BufferLayout::UseDefaultLayout();
+	// Draw call
 	glDrawArrays(GL_TRIANGLES, 0, drawBufferSize);
+
+	// End frame
+	lastTime = time;
 }
 
 void Renderer::End()
@@ -162,7 +185,7 @@ mat4 Renderer::CalculateMVP(vec3 modelPosition)
 	mat4 proj = glm::perspective(radians(45.0f), float(windowWidth / windowHeight), 0.1f, 100.0f);
 	mat4 view = glm::lookAt(vec3(4, 3, 3), vec3(0, 0, 0), vec3(0, 1, 0));
 	mat4 model = mat4(1.0f); // TODO : with modelPosition
-	return (proj * view * model);
+	return (camera.getProjMatrix() * camera.getViewMatrix() * model);
 }
 
 GLuint Renderer::LoadShaders(const char* vertexShaderPath, const char* fragmentShaderPath)
