@@ -24,6 +24,12 @@ void Renderer::PrepareOpenGL()
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Pour rendre MacOS heureux ; ne devrait pas être nécessaire
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // On ne veut pas l'ancien OpenGL
 	}
+
+	// Define default vertex buffer layout
+	vector<VertexBufferComponent> defaultLayout;
+	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
+	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 2, GL_FALSE));
+	VertexBufferLayout::defaultLayout = defaultLayout;
 }
 
 void Renderer::CreateWindow(int width, int height, const char* title)
@@ -97,10 +103,6 @@ void Renderer::Draw(Mesh mesh, Shader shader)
 		shader.UniformMatrix4fv("mvp", mvp);
 
 		mesh.Bind();
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 20, (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 20, (void*)12);
 
 		glDrawArrays(GL_TRIANGLES, 0, mesh.GetSize());
 	}

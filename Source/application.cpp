@@ -1,17 +1,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
+#include <vector>
 using namespace std;
 #include "Renderer.h"
 #include "Time.h"
 #include "Mesh.h"
-
+#include "VertexBufferLayout.h"
 
 int main()
 {
     // Initialization
     Renderer::PrepareOpenGL();
     Renderer::CreateWindow(1024, 768, "Minecraft clone");
-
 
 	// VOA
 	GLuint vao;
@@ -44,3 +44,5 @@ int main()
 
     return 0;
 }
+
+vector<VertexBufferComponent> VertexBufferLayout::defaultLayout;

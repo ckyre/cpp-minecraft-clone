@@ -540,6 +540,7 @@
     <ClInclude Include="Source\Time.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexBuffer.h" />
+    <ClInclude Include="Source\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\ASSIMP\include\assimp\color4.inl" />
