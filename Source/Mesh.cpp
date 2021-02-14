@@ -1,17 +1,16 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const char* path)
+Mesh::Mesh()
 {
-	Load(path);
 }
 
-bool Mesh::Load(const char* path)
+void Mesh::Load(const char* path)
 {
-	Clear();
+	// Load file
+	vector<Vertex> vertices;
 
 	Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
-
 	if (scene)
 	{
 		// Foeach meshs in scene
@@ -21,64 +20,46 @@ bool Mesh::Load(const char* path)
 			const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
 			// Foreach vertices in mesh
-			for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+			for (unsigned int j = 0; j < mesh->mNumVertices; j++)
 			{
-				const aiVector3D* _positions = &(mesh->mVertices[i]);
-				const aiVector3D* _normals = &(mesh->mNormals[i]);
-				const aiVector3D* _uvs = mesh->HasTextureCoords(0) ? &(mesh->mTextureCoords[0][i]) : &Zero3D;
+				const aiVector3D* _positions = &(mesh->mVertices[j]);
+				const aiVector3D* _normals = &(mesh->mNormals[j]);
+				const aiVector3D* _uvs = mesh->HasTextureCoords(0) ? &(mesh->mTextureCoords[0][j]) : &Zero3D;
 
-				positions.push_back((float)_positions->x);
-				positions.push_back((float)_positions->y);
-				positions.push_back((float)_positions->z);
-				uvs.push_back((float)_uvs->x);
-				uvs.push_back((float)_uvs->y);
-				//uvs.push_back((float)_uvs->z);
-				normals.push_back((float)_normals->x);
-				normals.push_back((float)_normals->y);
-				normals.push_back((float)_normals->z);
+				Vertex vertex;
+				vertex.position.x = (float)_positions->x;
+				vertex.position.y = (float)_positions->y;
+				vertex.position.z = (float)_positions->z;
+				//vertex.uvs.x = (float)_uvs->x;
+				//vertex.uvs.y = (float)_uvs->y;
+				//vertex.normals.x = (float)_normals->x;
+				//vertex.normals.y = (float)_normals->y;
+				//vertex.normals.z = (float)_normals->z;
+				vertices.push_back(vertex);
 			}
 		}
 	}
-
-	return true;
+	vb.Fill(vertices);
 }
 
-void Mesh::Clear()
+void Mesh::Load(vector<Vertex> vertices)
 {
-	positions.clear();
-	uvs.clear();
-	normals.clear();
+	vb.Fill(vertices);
 }
 
-GLfloat* Mesh::GetVerticesPositions()
+int Mesh::GetSize()
 {
-	int size = positions.size();
-	GLfloat* _positions = new GLfloat[size];
-	copy(positions.begin(), positions.end(), _positions);
-	return _positions;
+	return vb.GetSize();
 }
 
-GLfloat* Mesh::GetVerticesUVs()
+void Mesh::Bind()
 {
-	int size = uvs.size();
-	GLfloat* _uvs = new GLfloat[size];
-	copy(uvs.begin(), uvs.end(), _uvs);
-	return _uvs;
+	vb.Bind();
+	//ib.Bind();
 }
 
-GLfloat* Mesh::GetVerticesNormals()
+void Mesh::Unbind()
 {
-	return nullptr;
+	vb.Unbind();
+	//ib.Unbind();
 }
-
-int Mesh::GetPositionsCount()
-{
-	return positions.size();
-}
-
-int Mesh::GetUVsCount()
-{
-	return uvs.size();
-}
-
-

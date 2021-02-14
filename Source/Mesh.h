@@ -1,32 +1,28 @@
-#include <iostream>
 #include <vector>
 using namespace std;
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 using namespace Assimp;
 #include <glm/glm.hpp>
 using namespace glm;
+#include "Vertex.h"
+#include "VertexBuffer.h"
+
 #pragma once
 class Mesh
 {
-	public:
-		Mesh(const char* path);
-		bool Load(const char* path);
-
-		GLfloat* GetVerticesPositions();
-		GLfloat* GetVerticesUVs();
-		GLfloat* GetVerticesNormals();
-		int GetPositionsCount();
-		int GetUVsCount();
 	private:
-		vector<GLfloat> positions;
-		vector<GLfloat> uvs;
-		vector<GLfloat> normals;
+		VertexBuffer vb;
+		//IndexBuffer ib;
+	public:
+		Mesh();
+		void Load(const char* path);
+		void Load(vector<Vertex> vertices);
+		int GetSize();
 
-		void Clear();
-
+		void Bind();
+		void Unbind();
 };
 

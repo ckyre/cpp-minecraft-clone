@@ -151,15 +151,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Dependencies\glm\glm\detail\glm.cpp" />
-    <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
-    <ClCompile Include="Source\Buffer.cpp" />
+    <ClCompile Include="Dependencies\glm\glm\detail\glm.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
-    <ClCompile Include="source\application.cpp" />
-    <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\Time.cpp" />
+    <ClCompile Include="Source\Vertex.cpp" />
+    <ClCompile Include="Source\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\aabb.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\ai_assert.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\anim.h" />
@@ -529,11 +532,12 @@
     <ClInclude Include="Dependencies\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\glm\vector_relational.hpp" />
     <ClInclude Include="Dependencies\stb_image\include\stb_image.h" />
+    <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Mesh.h" />
-    <ClInclude Include="Source\Camera.h" />
-    <ClInclude Include="Source\Buffer.h" />
     <ClInclude Include="Source\Renderer.h" />
-    <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\Time.h" />
+    <ClInclude Include="Source\Vertex.h" />
+    <ClInclude Include="Source\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\ASSIMP\include\assimp\color4.inl" />
