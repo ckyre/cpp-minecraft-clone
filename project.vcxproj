@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\IndexBuffer.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Dependencies\glm\glm\detail\glm.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Source\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\IndexBuffer.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\aabb.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\ai_assert.h" />

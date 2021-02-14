@@ -67,7 +67,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		glfwSetCursorPos(window, (double)(windowWidth / 2), (double)(windowHeight / 2)); // Place cursor at center
 
 		openglReady = true;
-		cout << "[OpengGL] initialization succeeded : " << glGetString(GL_VERSION) << endl;
+		cout << "[OpenGL] initialization succeeded : " << glGetString(GL_VERSION) << endl;
 	}
 }
 
@@ -100,14 +100,13 @@ void Renderer::Draw(Mesh mesh, Shader shader)
 		camera.computeMatrices();
 
 		shader.Bind();
-		//mat4 mvp = CalculateMVP();
 		shader.UniformMatrix4fv("modelMatrix", mat4(1.0f));
 		shader.UniformMatrix4fv("viewMatrix", camera.getViewMatrix());
 		shader.UniformMatrix4fv("projMatrix", camera.getProjMatrix());
 
 		mesh.Bind();
 
-		glDrawArrays(GL_TRIANGLES, 0, mesh.GetSize());
+		glDrawElements(GL_TRIANGLES, mesh.GetIndexBufferCount(), GL_UNSIGNED_SHORT, (void*)0);
 	}
 }
 

@@ -1,22 +1,18 @@
-#include <iostream>
 #include <vector>
 using namespace std;
 #include <GL/glew.h>
-#include "Vertex.h"
-#include "VertexBufferLayout.h"
 
 #pragma once
-class VertexBuffer
+class IndexBuffer
 {
 	private:
 		unsigned int id;
 		unsigned int size;
 		unsigned int count;
-		VertexBufferLayout layout;
 
 	public:
-		VertexBuffer();
-		void Fill(vector<Vertex> vertices);
+		IndexBuffer();
+		void Fill(vector<unsigned short> indices);
 		int GetSize();
 		int GetCount();
 

@@ -12,5 +12,10 @@ class Vertex
 		vec3 normals;
 
 		vector<float> ToArray();
+
+		bool operator<(const Vertex that) const
+		{
+			return memcmp((void*)this, (void*)&that, sizeof(Vertex)) > 0;
+		};
 };
 

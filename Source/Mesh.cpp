@@ -8,7 +8,6 @@ void Mesh::Load(const char* path)
 {
 	// Load file
 	vector<Vertex> vertices;
-
 	Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 	if (scene)
@@ -39,27 +38,70 @@ void Mesh::Load(const char* path)
 			}
 		}
 	}
-	vb.Fill(vertices);
+	
+	IndexVertexBuffer(vertices);
 }
 
 void Mesh::Load(vector<Vertex> vertices)
 {
-	vb.Fill(vertices);
+	IndexVertexBuffer(vertices);
 }
 
-int Mesh::GetSize()
+void Mesh::IndexVertexBuffer(vector<Vertex> vertices)
 {
-	return vb.GetSize();
+	vector<Vertex> outVertices;
+	vector<unsigned short> outIndices;
+	map<Vertex, unsigned short> indexer;
+
+	for (unsigned int i = 0; i < vertices.size(); i++)
+	{
+		unsigned short index;
+		bool found = ContainVertex(vertices[i], indexer, index);
+		if (found)
+		{
+			outIndices.push_back(index);
+		}
+		else
+		{
+			outVertices.push_back(vertices[i]);
+			unsigned short newIndex = (unsigned short)outVertices.size() - 1;
+			outIndices.push_back(newIndex);
+			indexer[vertices[i]] = newIndex;
+		}
+	}
+
+	vb.Fill(outVertices);
+	ib.Fill(outIndices);
 }
+
+bool Mesh::ContainVertex(Vertex vertex, map<Vertex, unsigned short> &indexer, unsigned short &index)
+{
+	std::map<Vertex, unsigned short>::iterator iterator = indexer.find(vertex);
+	if (iterator == indexer.end())
+	{
+		return false;
+	}
+	else
+	{
+		index = iterator->second;
+		return true;
+	}
+	return false;
+}
+
+int Mesh::GetVertexBufferSize() { return vb.GetSize(); }
+int Mesh::GetIndexBufferSize() { return ib.GetSize(); }
+int Mesh::GetVertexBufferCount() { return vb.GetCount(); }
+int Mesh::GetIndexBufferCount() { return ib.GetCount(); }
 
 void Mesh::Bind()
 {
 	vb.Bind();
-	//ib.Bind();
+	ib.Bind();
 }
 
 void Mesh::Unbind()
 {
 	vb.Unbind();
-	//ib.Unbind();
+	ib.Unbind();
 }
