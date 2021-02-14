@@ -29,6 +29,7 @@ void Renderer::PrepareOpenGL()
 	vector<VertexBufferComponent> defaultLayout;
 	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
 	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 2, GL_FALSE));
+	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
 	VertexBufferLayout::defaultLayout = defaultLayout;
 }
 
@@ -99,8 +100,10 @@ void Renderer::Draw(Mesh mesh, Shader shader)
 		camera.computeMatrices();
 
 		shader.Bind();
-		mat4 mvp = CalculateMVP();
-		shader.UniformMatrix4fv("mvp", mvp);
+		//mat4 mvp = CalculateMVP();
+		shader.UniformMatrix4fv("modelMatrix", mat4(1.0f));
+		shader.UniformMatrix4fv("viewMatrix", camera.getViewMatrix());
+		shader.UniformMatrix4fv("projMatrix", camera.getProjMatrix());
 
 		mesh.Bind();
 

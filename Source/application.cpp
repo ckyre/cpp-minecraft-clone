@@ -19,11 +19,11 @@ int main()
 	glBindVertexArray(vao);
 
 	Mesh mesh;
-	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/sphere.obj");
+	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/suzanne.obj");
 
     Shader shader;
-    shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
-				"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
+    shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDiffuse.glsl",
+				"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fSpecular.glsl");
 
 	Texture texture;
 	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");

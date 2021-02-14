@@ -2,11 +2,13 @@
 
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec2 vertexUV;
+
 uniform mat4 mvp;
-out vec2 UV;
+
+out vec2 uv;
 
 void main()
 {
-	UV = vertexUV;
+	uv = vertexUV;
 	gl_Position = mvp * vec4(vertexPosition, 1.0);
 }

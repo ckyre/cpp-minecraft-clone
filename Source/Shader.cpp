@@ -25,9 +25,9 @@ void Shader::Load(const char* vertexShaderPath, const char* fragmentShaderPath)
 	{
 		vector<char> message(infoLogLenght + 1);
 		glGetProgramInfoLog(id, infoLogLenght, NULL, &message[0]);
-		cout << "Error while compiling shaders : " << message[0] << endl;
+		cout << "[OpenGL] Error while compiling shaders : " << message[0] << endl;
 	}
-	else { cout << "Shaders compiled sucessfully" << endl; }
+	else { cout << "[OpenGL] Shaders compiled sucessfully" << endl; }
 
 	// Delete shaders
 	glDetachShader(id, vertexShader);
@@ -54,7 +54,7 @@ GLuint Shader::CompileShader(ShaderType type, const char* path)
 	}
 	else
 	{
-		cout << "Error while compiling shaders : Unable to open file at : " << path << endl;
+		cout << "[OpenGL] Error while compiling shaders : Unable to open file at : " << path << endl;
 		return 0;
 	}
 
@@ -73,7 +73,7 @@ GLuint Shader::CompileShader(ShaderType type, const char* path)
 	{
 		vector<char> message(infoLogLength + 1);
 		glGetShaderInfoLog(shader, infoLogLength, NULL, &message[0]);
-		cout << "Error while compiling shaders : Compilation failed : " << message[0] << endl;
+		cout << "[OpenGL] Error while compiling shaders : Compilation failed : " << message[0] << endl;
 	}
 
 	return shader;
