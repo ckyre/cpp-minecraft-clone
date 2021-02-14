@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-Shader::Shader()
+Shader::Shader() : id(0)
 {
 }
 
@@ -78,6 +78,22 @@ GLuint Shader::CompileShader(ShaderType type, const char* path)
 
 	return shader;
 }
+
+// Uniforms
+void Shader::UniformTexture(Texture _texture)
+{
+	Bind();
+	texture = _texture;
+	texture.Bind();
+}
+
+void Shader::UniformMatrix4fv(const char* uniform, mat4 matrix)
+{
+	Bind();
+	GLuint mvpUniform = glGetUniformLocation(id, uniform);
+	glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &matrix[0][0]);
+}
+
 
 void Shader::Bind()
 {

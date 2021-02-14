@@ -9,8 +9,8 @@ vector<float> Vertex::ToArray()
 	result.push_back(position.x);
 	result.push_back(position.y);
 	result.push_back(position.z);
-	//result.push_back(uvs.x);
-	//result.push_back(uvs.y);
+	result.push_back(uvs.x);
+	result.push_back(uvs.y);
 	return result;
 }
 

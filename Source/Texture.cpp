@@ -1,31 +1,19 @@
 #include "Texture.h"
 
-Texture::Texture(const char* path)
+Texture::Texture()
+{
+}
+
+void Texture::Load(const char* path)
 {
 	glGenTextures(1, &id);
 	Bind();
-	Load(path);
-}
 
-GLuint Texture::Bind()
-{
-	glBindTexture(GL_TEXTURE_2D, id);
-	return id;
-}
-
-void Texture::Unbind()
-{
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-bool Texture::Load(const char* path)
-{
 	// Load image
-	unsigned char* image = stbi_load(path, &width, &height, nullptr, 0);
-	if (image == NULL)
+	unsigned char* data = stbi_load(path, &width, &height, nullptr, 0);
+	if (data == NULL)
 	{
-		printf("Error in loading the texture\n");
-		return false;
+		cout << "Error while loading a texture at : " << path << endl;
 	}
 
 	// Enable trilinear filtering
@@ -35,16 +23,17 @@ bool Texture::Load(const char* path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 	// Send to GPU
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	return true;
 }
 
-GLuint Texture::GetId() { return id; }
+void Texture::Bind()
+{
+	glBindTexture(GL_TEXTURE_2D, id);
+}
 
-int Texture::GetSize() { return width * height * 3; }
-
-int Texture::GetWidth() { return width; }
-
-int Texture::GetHeight() { return height; }
+void Texture::Unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

@@ -10,15 +10,12 @@ using namespace std;
 class Texture
 {
 	public:
-		Texture(const char* path);
-		GLuint Bind();
-		void Unbind();
-		bool Load(const char* path);
+		Texture();
+		void Load(const char* path);
 
-		GLuint GetId();
-		int GetSize();
-		int GetWidth();
-		int GetHeight();
+		void Bind();
+		void Unbind();
+
 	private:
 		GLuint id;
 		int width, height;

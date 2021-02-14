@@ -157,6 +157,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Time.cpp" />
     <ClCompile Include="Source\Vertex.cpp" />
     <ClCompile Include="Source\VertexBuffer.cpp" />
@@ -535,6 +536,7 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Time.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VertexBuffer.h" />

@@ -30,8 +30,8 @@ void Mesh::Load(const char* path)
 				vertex.position.x = (float)_positions->x;
 				vertex.position.y = (float)_positions->y;
 				vertex.position.z = (float)_positions->z;
-				//vertex.uvs.x = (float)_uvs->x;
-				//vertex.uvs.y = (float)_uvs->y;
+				vertex.uvs.x = (float)_uvs->x;
+				vertex.uvs.y = (float)_uvs->y;
 				//vertex.normals.x = (float)_normals->x;
 				//vertex.normals.y = (float)_normals->y;
 				//vertex.normals.z = (float)_normals->z;
