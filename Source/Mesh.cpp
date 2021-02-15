@@ -30,9 +30,9 @@ vector<Vertex> Mesh::LoadFile(const char* path)
 				vertex.position.z = (float)_positions->z;
 				vertex.uvs.x = (float)_uvs->x;
 				vertex.uvs.y = (float)_uvs->y;
-				vertex.normals.x = (float)_normals->x;
-				vertex.normals.y = (float)_normals->y;
-				vertex.normals.z = (float)_normals->z;
+				//vertex.normals.x = (float)_normals->x;
+				//vertex.normals.y = (float)_normals->y;
+				//vertex.normals.z = (float)_normals->z;
 				vertices.push_back(vertex);
 			}
 		}
@@ -44,7 +44,6 @@ void Mesh::Load(const char* path)
 {	
 	IndexVertexBuffer(LoadFile(path));
 }
-
 void Mesh::Load(vector<Vertex> vertices)
 {
 	IndexVertexBuffer(vertices);
@@ -76,7 +75,6 @@ void Mesh::IndexVertexBuffer(vector<Vertex> vertices)
 	vb.Fill(outVertices);
 	ib.Fill(outIndices);
 }
-
 bool Mesh::ContainVertex(Vertex vertex, map<Vertex, unsigned short> &indexer, unsigned short &index)
 {
 	std::map<Vertex, unsigned short>::iterator iterator = indexer.find(vertex);
@@ -102,7 +100,6 @@ void Mesh::Bind()
 	vb.Bind();
 	ib.Bind();
 }
-
 void Mesh::Unbind()
 {
 	vb.Unbind();

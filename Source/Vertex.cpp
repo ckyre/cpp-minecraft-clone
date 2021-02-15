@@ -2,7 +2,7 @@
 
 vec3 position;
 vec2 uvs;
-vec3 normals;
+//vec3 normals;
 
 vector<float> Vertex::ToArray()
 {
@@ -12,9 +12,9 @@ vector<float> Vertex::ToArray()
 	result.push_back(position.z);
 	result.push_back(uvs.x);
 	result.push_back(uvs.y);
-	result.push_back(normals.x);
-	result.push_back(normals.y);
-	result.push_back(normals.z);
+	//result.push_back(normals.x);
+	//result.push_back(normals.y);
+	//result.push_back(normals.z);
 	return result;
 }
 

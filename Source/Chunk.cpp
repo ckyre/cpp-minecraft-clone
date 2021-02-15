@@ -1,5 +1,8 @@
 #include "Chunk.h"
-#include "Renderer.h"
+
+Chunk::Chunk(Scene _parentScene, vec3 _position) : parentScene(_parentScene), position(_position)
+{
+}
 
 void Chunk::Update()
 {
@@ -19,18 +22,16 @@ void Chunk::Update()
 		{
 			for (int z = 0; z < 16; z++)
 			{
-				if (blockChunkId < blocks.size())
+				// Create visible faces
+				if (blocks[blockChunkId] != 0)
 				{
-					// Create visible faces
-					if (blocks[blockChunkId] != 0)
+					vector<Vertex> blockFaces = CreateBlockMesh(blockChunkId);
+					if (blockFaces.size() > 0)
 					{
-						vector<Vertex> blockFaces = CreateBlock(blockChunkId);
-						if (blockFaces.size() > 0)
-							vertices.insert(vertices.end(), blockFaces.begin(), blockFaces.end());
-
+						vertices.insert(vertices.end(), blockFaces.begin(), blockFaces.end());
 					}
-					blockChunkId++;
 				}
+				blockChunkId++;
 			}
 		}
 	}
@@ -41,7 +42,7 @@ void Chunk::Update()
 	}
 }
 
-vector<Vertex> Chunk::CreateBlock(unsigned short int blockChunkId)
+vector<Vertex> Chunk::CreateBlockMesh(unsigned short int blockChunkId)
 {
 	vector<Vertex> vertices;
 
@@ -51,42 +52,24 @@ vector<Vertex> Chunk::CreateBlock(unsigned short int blockChunkId)
 
 	// Top face
 	if (GetBlock(blockChunkId + 256) == 0)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/top-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::topFace.begin(), Renderer::topFace.end());
 	// Bottom face
 	if (GetBlock(blockChunkId - 256) == 0)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/bottom-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::bottomFace.begin(), Renderer::bottomFace.end());
 
 	// Right face
 	if (GetBlock(blockChunkId + 16) == 0 || x == 15)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/right-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::rightFace.begin(), Renderer::rightFace.end());
 	// Left face
 	if (GetBlock(blockChunkId - 16) == 0 || x == 0)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/left-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::leftFace.begin(), Renderer::leftFace.end());
 
 	// Front face
 	if (GetBlock(blockChunkId - 1) == 0 || z == 0)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/front-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::frontFace.begin(), Renderer::frontFace.end());
 	// Back face
 	if (GetBlock(blockChunkId + 1) == 0 || z == 15)
-	{
-		vector<Vertex> face = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/back-face.obj");
-		vertices.insert(vertices.end(), face.begin(), face.end());
-	}
+		vertices.insert(vertices.end(), Renderer::backFace.begin(), Renderer::backFace.end());
 
 	for (int i = 0; i < vertices.size(); i++)
 	{
@@ -100,7 +83,6 @@ void Chunk::Draw()
 {
 	Renderer::Draw(mesh, Renderer::defaultShader, position);
 }
-
 
 unsigned short Chunk::GetBlock(short int blockChunkId)
 {

@@ -10,6 +10,7 @@ class Scene
 {
 	private:
 		vector<Chunk> chunks;
+		const int WORLD_SIZE = 4;
 
 	public:
 		static Camera camera;

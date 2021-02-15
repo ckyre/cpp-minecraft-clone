@@ -20,14 +20,15 @@ class Renderer
 		static GLFWmonitor* monitor;
 		static int windowWidth, windowHeight, monitorWidth, monitorHeight;
 
-		static Mesh cubeMesh;
-		static Shader defaultShader;
-
 		static void PrepareOpenGL();
 		static void CreateWindow(int width, int height, const char* title);
 		static void LoadDefaultResources();
 
 		static void Clear();
 		static void Draw(Mesh mesh, Shader shader, vec3 position);
-		static mat4 CalculateMVP();
+
+		// Default resources
+		static Mesh cubeMesh;
+		static Shader defaultShader;
+		static vector<Vertex> topFace, bottomFace, frontFace, backFace, rightFace, leftFace;
 };

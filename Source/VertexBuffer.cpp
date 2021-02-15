@@ -25,7 +25,6 @@ void VertexBuffer::Fill(vector<Vertex> vertices)
 }
 
 int VertexBuffer::GetSize() { return size; }
-
 int VertexBuffer::GetCount() { return count; }
 
 void VertexBuffer::Bind()
@@ -43,7 +42,6 @@ void VertexBuffer::Bind()
 		offset += VertexBufferComponent::GetSizeOfType(component.type) * component.count;
 	}
 }
-
 void VertexBuffer::Unbind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -9,7 +9,7 @@ class Vertex
 	public:
 		vec3 position;
 		vec2 uvs;
-		vec3 normals;
+		//vec3 normals;
 
 		vector<float> ToArray();
 

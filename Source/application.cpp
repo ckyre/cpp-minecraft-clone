@@ -6,7 +6,7 @@ using namespace std;
 #include "Time.h"
 #include "Mesh.h"
 #include "VertexBufferLayout.h"
-#include "Chunk.h"
+#include "Camera.h"
 
 int main()
 {

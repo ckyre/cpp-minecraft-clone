@@ -5,12 +5,11 @@ Camera Scene::camera;
 void Scene::GenerateWorld()
 {
 	// Generate world
-	for (int x = 0; x < 1; x += 16)
+	for (int x = 0; x < WORLD_SIZE; x++)
 	{
-		for (int z = 0; z < 1; z += 16)
+		for (int z = 0; z < WORLD_SIZE; z++)
 		{
-			Chunk chunk;
-			chunk.position = vec3(x - 8, 0, z - 8);
+			Chunk chunk(vec3(x * 32, -32, z * 32), this);
 			chunk.Update();
 			chunks.push_back(chunk);
 		}

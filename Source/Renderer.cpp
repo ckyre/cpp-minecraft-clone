@@ -8,6 +8,8 @@ int Renderer::windowWidth, Renderer::windowHeight, Renderer::monitorWidth, Rende
 Mesh Renderer::cubeMesh;
 Shader Renderer::defaultShader;
 
+vector<Vertex> Renderer::topFace, Renderer::backFace, Renderer::frontFace, Renderer::bottomFace, Renderer::rightFace, Renderer::leftFace;
+
 // Initalization
 void Renderer::PrepareOpenGL()
 {
@@ -26,13 +28,6 @@ void Renderer::PrepareOpenGL()
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Pour rendre MacOS heureux ; ne devrait pas être nécessaire
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // On ne veut pas l'ancien OpenGL
 	}
-
-	// Define default vertex buffer layout
-	vector<VertexBufferComponent> defaultLayout;
-	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
-	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 2, GL_FALSE));
-	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
-	VertexBufferLayout::defaultLayout = defaultLayout;
 }
 
 void Renderer::CreateWindow(int width, int height, const char* title)
@@ -80,9 +75,18 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 
 void Renderer::LoadDefaultResources()
 {
-	Mesh mesh;
-	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/cube.obj");
+	// Define default vertex buffer layout
+	vector<VertexBufferComponent> defaultLayout;
+	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 3, GL_FALSE));
+	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 2, GL_FALSE));
+	VertexBufferLayout::defaultLayout = defaultLayout;
 
+	// Cube mesh
+	Mesh mesh;
+	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/suzanne.obj");
+	Renderer::cubeMesh = mesh;
+
+	// Default shader
 	Texture texture;
 	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");
 
@@ -90,9 +94,15 @@ void Renderer::LoadDefaultResources()
 	shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
 		"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
 	shader.UniformTexture(texture);
-
-	Renderer::cubeMesh = mesh;
 	Renderer::defaultShader = shader;
+
+	// All faces
+	topFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/top-face.obj");
+	bottomFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/bottom-face.obj");
+	frontFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/front-face.obj");
+	backFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/back-face.obj");
+	rightFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/right-face.obj");
+	leftFace = Mesh::LoadFile("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/left-face.obj");
 }
 
 // Rendering
@@ -111,12 +121,12 @@ void Renderer::Clear()
 		glDepthFunc(GL_LESS);
 
 		// Backface culling
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
-		//glFrontFace(GL_CCW);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW);
 
 		// Wireframe mode
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 }
 
@@ -136,8 +146,3 @@ void Renderer::Draw(Mesh mesh, Shader shader, vec3 position)
 	}
 }
 
-mat4 Renderer::CalculateMVP()
-{
-	mat4 model = mat4(1.0f);
-	return (Scene::camera.getProjMatrix() * Scene::camera.getViewMatrix() * model);
-}
