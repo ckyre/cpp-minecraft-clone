@@ -5,18 +5,23 @@ using namespace std;
 #include "glm/glm.hpp"
 using namespace glm;
 #include "Vertex.h";
+#include "Mesh.h"
 
 #pragma once
 class Chunk
 {
-	public:
-		vector<unsigned short> data; // key : bloc id; value : count
+	private:
+		vec3 position;
+		vector<unsigned short> blocks; // blocks id
+		Mesh mesh;
 
-		vector<Vertex> CreateBlock(vec3 position);
-		unsigned short GetBlock(int index);
+	public:
+		vector<Vertex> CreateBlock(vec3 blockLocalPosition);
+		unsigned short GetBlock(short int blockChunkId);
 		unsigned short GetBlock(vec3 position);
 
 		void Start();
 		void Update();
+		void Draw();
 };
 

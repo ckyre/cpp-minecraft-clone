@@ -16,8 +16,9 @@ int main()
 
     Renderer::LoadDefaultResources();
 
-    //Chunk chunk;
-    //chunk.Start();
+    Chunk chunk;
+    chunk.Start();
+    chunk.Update();
 
     // Main loop
     while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
@@ -26,8 +27,7 @@ int main()
 		Time::Update();
 		Renderer::Clear();
 
-        //chunk.Update();
-        Renderer::Draw(Renderer::cubeMesh, Renderer::defaultShader, vec3(0, 0, -10));
+        chunk.Draw();
 
 		// Swap buffers
 		glfwSwapBuffers(Renderer::window);
