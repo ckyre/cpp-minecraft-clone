@@ -16,18 +16,16 @@ int main()
 
     Renderer::LoadDefaultResources();
 
-    Chunk chunk;
-    chunk.Start();
-    chunk.Update();
-
+    Scene scene;
+    scene.GenerateWorld();
+    
     // Main loop
     while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
     {
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		Time::Update();
 		Renderer::Clear();
 
-        chunk.Draw();
+        scene.Update();
 
 		// Swap buffers
 		glfwSwapBuffers(Renderer::window);

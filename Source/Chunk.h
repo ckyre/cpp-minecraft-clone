@@ -11,16 +11,16 @@ using namespace glm;
 class Chunk
 {
 	private:
-		vec3 position;
 		vector<unsigned short> blocks; // blocks id
 		Mesh mesh;
 
 	public:
-		vector<Vertex> CreateBlock(vec3 blockLocalPosition);
+		vec3 position;
+
+		vector<Vertex> CreateBlock(unsigned short int blockChunkId);
 		unsigned short GetBlock(short int blockChunkId);
 		unsigned short GetBlock(vec3 position);
 
-		void Start();
 		void Update();
 		void Draw();
 };

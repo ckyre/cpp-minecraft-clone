@@ -74,7 +74,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		glBindVertexArray(vao);
 
 		openglReady = true;
-		cout << "[OpenGL] initialization succeeded : " << glGetString(GL_VERSION) << endl;
+		cout << "[OpenGL] Initialization : " << glGetString(GL_VERSION) << endl;
 	}
 }
 
@@ -114,6 +114,9 @@ void Renderer::Clear()
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
 		//glFrontFace(GL_CCW);
+
+		// Wireframe mode
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 }
 
@@ -121,8 +124,6 @@ void Renderer::Draw(Mesh mesh, Shader shader, vec3 position)
 {
 	if (openglReady)
 	{
-		Scene::camera.computeMatrices();
-
 		shader.Bind();
 		mat4 modelMatrix = translate(mat4(1.0f), position);
 		shader.UniformMatrix4fv("modelMatrix", modelMatrix);
