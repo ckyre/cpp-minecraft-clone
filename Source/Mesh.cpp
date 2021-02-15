@@ -4,9 +4,8 @@ Mesh::Mesh()
 {
 }
 
-void Mesh::Load(const char* path)
+vector<Vertex> Mesh::LoadFile(const char* path)
 {
-	// Load file
 	vector<Vertex> vertices;
 	Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
@@ -38,8 +37,12 @@ void Mesh::Load(const char* path)
 			}
 		}
 	}
-	
-	IndexVertexBuffer(vertices);
+	return vertices;
+}
+
+void Mesh::Load(const char* path)
+{	
+	IndexVertexBuffer(LoadFile(path));
 }
 
 void Mesh::Load(vector<Vertex> vertices)

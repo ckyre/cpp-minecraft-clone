@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Chunk.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\IndexBuffer.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Dependencies\glm\glm\detail\glm.cpp" />
@@ -162,8 +164,11 @@
     <ClCompile Include="Source\Time.cpp" />
     <ClCompile Include="Source\Vertex.cpp" />
     <ClCompile Include="Source\VertexBuffer.cpp" />
+    <ClCompile Include="Source\VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Chunk.h" />
+    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\IndexBuffer.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Dependencies\ASSIMP\include\assimp\aabb.h" />

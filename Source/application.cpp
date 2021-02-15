@@ -6,6 +6,7 @@ using namespace std;
 #include "Time.h"
 #include "Mesh.h"
 #include "VertexBufferLayout.h"
+#include "Chunk.h"
 
 int main()
 {
@@ -13,29 +14,20 @@ int main()
     Renderer::PrepareOpenGL();
     Renderer::CreateWindow(1024, 768, "Minecraft clone");
 
-	// VOA
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+    Renderer::LoadDefaultResources();
 
-	Mesh mesh;
-	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/suzanne.obj");
-
-    Shader shader;
-    shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDiffuse.glsl",
-				"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fSpecular.glsl");
-
-	Texture texture;
-	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");
-	shader.UniformTexture(texture);
+    //Chunk chunk;
+    //chunk.Start();
 
     // Main loop
     while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
     {
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		Time::Update();
 		Renderer::Clear();
 
-		Renderer::Draw(mesh, shader);
+        //chunk.Update();
+        Renderer::Draw(Renderer::cubeMesh, Renderer::defaultShader, vec3(0, 0, -10));
 
 		// Swap buffers
 		glfwSwapBuffers(Renderer::window);
@@ -44,5 +36,3 @@ int main()
 
     return 0;
 }
-
-vector<VertexBufferComponent> VertexBufferLayout::defaultLayout;

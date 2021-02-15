@@ -4,7 +4,9 @@ bool Renderer::openglReady = false;
 GLFWwindow* Renderer::window;
 GLFWmonitor* Renderer::monitor;
 int Renderer::windowWidth, Renderer::windowHeight, Renderer::monitorWidth, Renderer::monitorHeight;
-Camera Renderer::camera;
+
+Mesh Renderer::cubeMesh;
+Shader Renderer::defaultShader;
 
 // Initalization
 void Renderer::PrepareOpenGL()
@@ -66,9 +68,31 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 		glfwSetCursorPos(window, (double)(windowWidth / 2), (double)(windowHeight / 2)); // Place cursor at center
 
+		// Create VOA
+		GLuint vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
 		openglReady = true;
 		cout << "[OpenGL] initialization succeeded : " << glGetString(GL_VERSION) << endl;
 	}
+}
+
+void Renderer::LoadDefaultResources()
+{
+	Mesh mesh;
+	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/cube.obj");
+
+	Texture texture;
+	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");
+
+	Shader shader;
+	shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
+		"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
+	shader.UniformTexture(texture);
+
+	Renderer::cubeMesh = mesh;
+	Renderer::defaultShader = shader;
 }
 
 // Rendering
@@ -93,16 +117,17 @@ void Renderer::Clear()
 	}
 }
 
-void Renderer::Draw(Mesh mesh, Shader shader)
+void Renderer::Draw(Mesh mesh, Shader shader, vec3 position)
 {
 	if (openglReady)
 	{
-		camera.computeMatrices();
+		Scene::camera.computeMatrices();
 
 		shader.Bind();
-		shader.UniformMatrix4fv("modelMatrix", mat4(1.0f));
-		shader.UniformMatrix4fv("viewMatrix", camera.getViewMatrix());
-		shader.UniformMatrix4fv("projMatrix", camera.getProjMatrix());
+		mat4 modelMatrix = translate(mat4(1.0f), position);
+		shader.UniformMatrix4fv("modelMatrix", modelMatrix);
+		shader.UniformMatrix4fv("viewMatrix", Scene::camera.getViewMatrix());
+		shader.UniformMatrix4fv("projMatrix", Scene::camera.getProjMatrix());
 
 		mesh.Bind();
 
@@ -113,5 +138,5 @@ void Renderer::Draw(Mesh mesh, Shader shader)
 mat4 Renderer::CalculateMVP()
 {
 	mat4 model = mat4(1.0f);
-	return (camera.getProjMatrix() * camera.getViewMatrix() * model);
+	return (Scene::camera.getProjMatrix() * Scene::camera.getViewMatrix() * model);
 }

@@ -23,6 +23,7 @@ class Mesh
 		bool ContainVertex(Vertex vertex, map<Vertex, unsigned short> &indexer, unsigned short &index);
 	public:
 		Mesh();
+		static vector<Vertex> LoadFile(const char* path);
 		void Load(const char* path);
 		void Load(vector<Vertex> vertices);
 		int GetVertexBufferSize();
