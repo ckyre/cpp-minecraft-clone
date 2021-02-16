@@ -1,6 +1,7 @@
 #include "Chunk.h"
+#include "Renderer.h"
 
-Chunk::Chunk(Scene _parentScene, vec3 _position) : parentScene(_parentScene), position(_position)
+Chunk::Chunk(vec3 _position) : position(_position)
 {
 }
 

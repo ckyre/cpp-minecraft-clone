@@ -10,6 +10,8 @@ using namespace glm;
 #include "Shader.h"
 
 #pragma once
+class Renderer;
+
 class Renderer
 {
 	private:

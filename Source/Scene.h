@@ -1,11 +1,12 @@
 #include <vector>
 using namespace std;
-#include "Chunk.h"
-#include "Camera.h"
 #include "glm/glm.hpp"
 using namespace glm;
+#include "Camera.h"
+#include "Chunk.h"
 
 #pragma once
+
 class Scene
 {
 	private:

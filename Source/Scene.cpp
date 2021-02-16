@@ -9,7 +9,7 @@ void Scene::GenerateWorld()
 	{
 		for (int z = 0; z < WORLD_SIZE; z++)
 		{
-			Chunk chunk(vec3(x * 32, -32, z * 32), this);
+			Chunk chunk(vec3(x * 32, -32, z * 32));
 			chunk.Update();
 			chunks.push_back(chunk);
 		}
