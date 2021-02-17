@@ -5,7 +5,7 @@ GLFWwindow* Renderer::window;
 GLFWmonitor* Renderer::monitor;
 int Renderer::windowWidth, Renderer::windowHeight, Renderer::monitorWidth, Renderer::monitorHeight;
 
-Mesh Renderer::cubeMesh;
+Mesh Renderer::defaultMesh;
 Shader Renderer::defaultShader;
 
 vector<Vertex> Renderer::topFace, Renderer::backFace, Renderer::frontFace, Renderer::bottomFace, Renderer::rightFace, Renderer::leftFace;
@@ -41,7 +41,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
 		if (window == NULL)
 		{
-			fprintf(stderr, "Failed to open GLFW window.\n");
+			cout << "[OpenGL] Failed to open GLFW window" << endl;
 			glfwTerminate();
 		}
 		monitor = glfwGetPrimaryMonitor();
@@ -56,7 +56,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		glewExperimental = true;
 		if (glewInit() != GLEW_OK)
 		{
-			fprintf(stderr, "Failed to initialize GLEW\n");
+			cout << "[OpenGL] Failed to initialize GLEW" << endl;
 		}
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -69,7 +69,7 @@ void Renderer::CreateWindow(int width, int height, const char* title)
 		glBindVertexArray(vao);
 
 		openglReady = true;
-		cout << "[OpenGL] Initialization : " << glGetString(GL_VERSION) << endl;
+		cout << "[OpenGL] " << glGetString(GL_VERSION) << endl;
 	}
 }
 
@@ -81,10 +81,10 @@ void Renderer::LoadDefaultResources()
 	defaultLayout.push_back(VertexBufferComponent(GL_FLOAT, 2, GL_FALSE));
 	VertexBufferLayout::defaultLayout = defaultLayout;
 
-	// Cube mesh
+	// Default mesh
 	Mesh mesh;
 	mesh.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Meshes/suzanne.obj");
-	Renderer::cubeMesh = mesh;
+	Renderer::defaultMesh = mesh;
 
 	// Default shader
 	Texture texture;

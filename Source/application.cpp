@@ -18,7 +18,7 @@ int main()
 
     Scene scene;
     scene.GenerateWorld();
-    
+
     // Main loop
     while (glfwGetKey(Renderer::window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(Renderer::window) == 0)
     {

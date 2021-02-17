@@ -30,7 +30,7 @@ class Renderer
 		static void Draw(Mesh mesh, Shader shader, vec3 position);
 
 		// Default resources
-		static Mesh cubeMesh;
+		static Mesh defaultMesh;
 		static Shader defaultShader;
 		static vector<Vertex> topFace, bottomFace, frontFace, backFace, rightFace, leftFace;
 };

@@ -18,11 +18,12 @@ public:
 	void computeMatrices();
 	mat4 getProjMatrix();
 	mat4 getViewMatrix();
+
 private:
 	float horizontalAngle = 3.14f;
 	float verticalAngle = 0.0f;
-	float speed = 9.0f;
-	float sensivity = 0.08f;
+	float speed = 14.0f;
+	float sensivity = 0.09f;
 
 	mat4 proj = mat4(1);
 	mat4 view = mat4(1);

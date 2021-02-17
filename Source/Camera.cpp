@@ -20,16 +20,16 @@ void Camera::computeMatrices()
 
 	// Move position
 	if (glfwGetKey(Renderer::window, GLFW_KEY_W) == GLFW_PRESS) // Forward
-		position += forward * Time::deltaTime * speed;
+		position += forward * speed * Time::deltaTime;
 	if (glfwGetKey(Renderer::window, GLFW_KEY_S) == GLFW_PRESS) // Backward
-		position -= forward * Time::deltaTime * speed;
+		position -= forward * speed * Time::deltaTime;
 	if (glfwGetKey(Renderer::window, GLFW_KEY_D) == GLFW_PRESS) // Right
-		position += right * Time::deltaTime * speed;
+		position += right * speed * Time::deltaTime;
 	if (glfwGetKey(Renderer::window, GLFW_KEY_A) == GLFW_PRESS) // Left
-		position -= right * Time::deltaTime * speed;
+		position -= right * speed * Time::deltaTime;
 
 	// Calculate matices
-	proj = perspective(radians(fov), 4.0f / 3.0f, 0.1f, 100.0f);
+	proj = perspective(radians(fov), 4.0f / 3.0f, 0.1f, 200.0f);
 	view = lookAt(position, position + forward, up);
 }
 

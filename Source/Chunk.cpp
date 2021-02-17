@@ -3,30 +3,32 @@
 
 Chunk::Chunk(vec3 _position) : position(_position)
 {
+	int size = (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+	blocks.resize(size);
+	for (int i = 0; i < size; i++)
+	{
+		blocks[i] = 1;
+	}
 }
 
 void Chunk::Update()
 {
-	blocks.resize(4096);
-	for (int i = 0; i < 4096; i++)
-	{
-		blocks[i] = 1;
-	}
+	float startTime = (float)glfwGetTime();
 
 	vector<Vertex> vertices;
-
+	
 	// For each blocks of the chunk
 	unsigned short int blockChunkId = 0;
-	for (int y = 0; y < 16; y++)
+	for (int x = 0; x < CHUNK_SIZE; x++)
 	{
-		for (int x = 0; x < 16; x++)
+		for (int y = 0; y < CHUNK_SIZE; y++)
 		{
-			for (int z = 0; z < 16; z++)
+			for (int z = 0; z < CHUNK_SIZE; z++)
 			{
 				// Create visible faces
 				if (blocks[blockChunkId] != 0)
 				{
-					vector<Vertex> blockFaces = CreateBlockMesh(blockChunkId);
+					vector<Vertex> blockFaces = CreateBlockMesh(vec3(x, y, z));
 					if (blockFaces.size() > 0)
 					{
 						vertices.insert(vertices.end(), blockFaces.begin(), blockFaces.end());
@@ -40,41 +42,39 @@ void Chunk::Update()
 	if (vertices.size() > 0)
 	{
 		mesh.Load(vertices);
+		cout << "Chunk generation duration : " << ((float)glfwGetTime() - startTime) << endl;
 	}
 }
 
-vector<Vertex> Chunk::CreateBlockMesh(unsigned short int blockChunkId)
+vector<Vertex> Chunk::CreateBlockMesh(vec3 blockPosition)
 {
 	vector<Vertex> vertices;
 
-	unsigned short int y = (blockChunkId / 256);
-	unsigned short int x = (blockChunkId - (y * 256)) / 16;
-	unsigned short int z = (blockChunkId - (y * 256)) % 16;
-
 	// Top face
-	if (GetBlock(blockChunkId + 256) == 0)
+	if (GetBlockId(vec3(blockPosition.x, blockPosition.y + 1, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::topFace.begin(), Renderer::topFace.end());
 	// Bottom face
-	if (GetBlock(blockChunkId - 256) == 0)
+	if (GetBlockId(vec3(blockPosition.x, blockPosition.y - 1, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::bottomFace.begin(), Renderer::bottomFace.end());
 
 	// Right face
-	if (GetBlock(blockChunkId + 16) == 0 || x == 15)
+	if (GetBlockId(vec3(blockPosition.x + 1, blockPosition.y, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::rightFace.begin(), Renderer::rightFace.end());
 	// Left face
-	if (GetBlock(blockChunkId - 16) == 0 || x == 0)
+	if (GetBlockId(vec3(blockPosition.x - 1, blockPosition.y, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::leftFace.begin(), Renderer::leftFace.end());
 
 	// Front face
-	if (GetBlock(blockChunkId - 1) == 0 || z == 0)
+	if (GetBlockId(vec3(blockPosition.x, blockPosition.y, blockPosition.z - 1)) == 0)
 		vertices.insert(vertices.end(), Renderer::frontFace.begin(), Renderer::frontFace.end());
 	// Back face
-	if (GetBlock(blockChunkId + 1) == 0 || z == 15)
+	if (GetBlockId(vec3(blockPosition.x, blockPosition.y, blockPosition.z + 1)) == 0)
 		vertices.insert(vertices.end(), Renderer::backFace.begin(), Renderer::backFace.end());
+
 
 	for (int i = 0; i < vertices.size(); i++)
 	{
-		vertices[i].position += vec3(x * 2, y * 2, z * 2);
+		vertices[i].position += vec3(blockPosition.x * BLOCK_SIZE, blockPosition.y * BLOCK_SIZE, blockPosition.z * BLOCK_SIZE);
 	}
 
 	return vertices;
@@ -85,28 +85,24 @@ void Chunk::Draw()
 	Renderer::Draw(mesh, Renderer::defaultShader, position);
 }
 
-unsigned short Chunk::GetBlock(short int blockChunkId)
+unsigned short Chunk::GetBlockId(short int blockChunkId)
 {
 	if (blockChunkId < 0 || blockChunkId >= blocks.size())
-	{
 		return 0;
-	}
-	else
-	{
-		return blocks[blockChunkId];
-	}
+
+	return blocks[blockChunkId];
 }
 
-unsigned short Chunk::GetBlock(vec3 position)
+unsigned short Chunk::GetBlockId(vec3 blockPosition)
 {
-	if (position.y >= 0 && position.y <= 15)
+	if (blockPosition.x >= 0 && blockPosition.x < CHUNK_SIZE)
 	{
-		if (position.x >= 0 && position.x <= 15)
+		if (blockPosition.y >= 0 && blockPosition.y < CHUNK_SIZE)
 		{
-			if (position.z >= 0 && position.z <= 15)
+			if (blockPosition.z >= 0 && blockPosition.z < CHUNK_SIZE)
 			{
-				int index = (256 * position.y) + (16 * position.x) + position.z;
-				if (index >= 0 || index < blocks.size())
+				int index = ((CHUNK_SIZE * CHUNK_SIZE) * blockPosition.x) + (CHUNK_SIZE * blockPosition.y) + blockPosition.z;
+				if (index >= 0 && index < blocks.size())
 				{
 					return blocks[index];
 				}
