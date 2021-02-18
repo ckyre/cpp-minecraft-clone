@@ -10,6 +10,8 @@ using namespace glm;
 #include "Mesh.h"
 
 #pragma once
+class Scene;
+
 class Chunk
 {
 	private:
@@ -17,15 +19,22 @@ class Chunk
 		vector<unsigned short> blocks; // blocks id
 		Mesh mesh;
 
+		Scene* scene;
+		unsigned short sceneChunkIndex;
+
 		vector<Vertex> CreateBlockMesh(vec3 blockPosition);
-		unsigned short GetBlockId(short int blockChunkId);
-		unsigned short GetBlockId(vec3 blockPosition);
+		unsigned short GetBlockType(short int blockChunkId);
+		unsigned short GetBlockType(vec3 blockPosition);
+		unsigned short GetBlockIndex(vec3 blockPosition);
 
 	public:
 		static const unsigned short CHUNK_SIZE = 16;
 		static const unsigned short BLOCK_SIZE = 2;
 
-		Chunk(vec3 _position);
+		Chunk(vec3 _position, Scene* _scene, unsigned short _sceneChunkIndex);
+		void SetBlock(vec3 blockPosition, unsigned short blockId);
 		void Update();
 		void Draw();
+
+		vec3 inline GetPosition() { return position; }
 };

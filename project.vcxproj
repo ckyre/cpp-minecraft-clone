@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Random.cpp" />
     <ClCompile Include="Source\Chunk.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\IndexBuffer.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Source\VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Random.h" />
     <ClInclude Include="Source\Chunk.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\IndexBuffer.h" />

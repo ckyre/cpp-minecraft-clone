@@ -23,7 +23,7 @@ private:
 	float horizontalAngle = 3.14f;
 	float verticalAngle = 0.0f;
 	float speed = 14.0f;
-	float sensivity = 0.09f;
+	float sensivity = 0.1f;
 
 	mat4 proj = mat4(1);
 	mat4 view = mat4(1);

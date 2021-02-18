@@ -1,14 +1,35 @@
+#include "Scene.h"
 #include "Chunk.h"
 #include "Renderer.h"
 
-Chunk::Chunk(vec3 _position) : position(_position)
+Chunk::Chunk(vec3 _position, Scene* _scene, unsigned short _sceneChunkIndex) 
+	: position(_position), scene(_scene), sceneChunkIndex(_sceneChunkIndex)
 {
 	int size = (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
 	blocks.resize(size);
-	for (int i = 0; i < size; i++)
+	for (int x = 0; x < CHUNK_SIZE; x++)
 	{
-		blocks[i] = 1;
+		for (int y = 0; y < CHUNK_SIZE; y++)
+		{
+			for (int z = 0; z < CHUNK_SIZE; z++)
+			{
+				if (y <= scene->GetHeight(sceneChunkIndex, vec3(x, y, z)))
+				{
+					blocks[x + y + z] = 1;
+				}
+				else
+				{
+					blocks[x + y + z] = 0;
+				}
+			}
+		}
 	}
+}
+
+void Chunk::SetBlock(vec3 blockPosition, unsigned short blockId)
+{
+	blocks[GetBlockIndex(blockPosition)] = blockId;
+	Update();
 }
 
 void Chunk::Update()
@@ -42,7 +63,7 @@ void Chunk::Update()
 	if (vertices.size() > 0)
 	{
 		mesh.Load(vertices);
-		cout << "Chunk generation duration : " << ((float)glfwGetTime() - startTime) << endl;
+		//cout << "Chunk generation duration : " << ((float)glfwGetTime() - startTime) << endl;
 	}
 }
 
@@ -51,24 +72,24 @@ vector<Vertex> Chunk::CreateBlockMesh(vec3 blockPosition)
 	vector<Vertex> vertices;
 
 	// Top face
-	if (GetBlockId(vec3(blockPosition.x, blockPosition.y + 1, blockPosition.z)) == 0)
+	if (GetBlockType(vec3(blockPosition.x, blockPosition.y + 1, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::topFace.begin(), Renderer::topFace.end());
 	// Bottom face
-	if (GetBlockId(vec3(blockPosition.x, blockPosition.y - 1, blockPosition.z)) == 0)
+	if (GetBlockType(vec3(blockPosition.x, blockPosition.y - 1, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::bottomFace.begin(), Renderer::bottomFace.end());
 
 	// Right face
-	if (GetBlockId(vec3(blockPosition.x + 1, blockPosition.y, blockPosition.z)) == 0)
+	if (GetBlockType(vec3(blockPosition.x + 1, blockPosition.y, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::rightFace.begin(), Renderer::rightFace.end());
 	// Left face
-	if (GetBlockId(vec3(blockPosition.x - 1, blockPosition.y, blockPosition.z)) == 0)
+	if (GetBlockType(vec3(blockPosition.x - 1, blockPosition.y, blockPosition.z)) == 0)
 		vertices.insert(vertices.end(), Renderer::leftFace.begin(), Renderer::leftFace.end());
 
 	// Front face
-	if (GetBlockId(vec3(blockPosition.x, blockPosition.y, blockPosition.z - 1)) == 0)
+	if (GetBlockType(vec3(blockPosition.x, blockPosition.y, blockPosition.z - 1)) == 0)
 		vertices.insert(vertices.end(), Renderer::frontFace.begin(), Renderer::frontFace.end());
 	// Back face
-	if (GetBlockId(vec3(blockPosition.x, blockPosition.y, blockPosition.z + 1)) == 0)
+	if (GetBlockType(vec3(blockPosition.x, blockPosition.y, blockPosition.z + 1)) == 0)
 		vertices.insert(vertices.end(), Renderer::backFace.begin(), Renderer::backFace.end());
 
 
@@ -85,7 +106,7 @@ void Chunk::Draw()
 	Renderer::Draw(mesh, Renderer::defaultShader, position);
 }
 
-unsigned short Chunk::GetBlockId(short int blockChunkId)
+unsigned short Chunk::GetBlockType(short int blockChunkId)
 {
 	if (blockChunkId < 0 || blockChunkId >= blocks.size())
 		return 0;
@@ -93,7 +114,7 @@ unsigned short Chunk::GetBlockId(short int blockChunkId)
 	return blocks[blockChunkId];
 }
 
-unsigned short Chunk::GetBlockId(vec3 blockPosition)
+unsigned short Chunk::GetBlockType(vec3 blockPosition)
 {
 	if (blockPosition.x >= 0 && blockPosition.x < CHUNK_SIZE)
 	{
@@ -111,4 +132,19 @@ unsigned short Chunk::GetBlockId(vec3 blockPosition)
 	}
 	return 0;
 
+}
+
+unsigned short Chunk::GetBlockIndex(vec3 blockPosition)
+{
+	if (blockPosition.x >= 0 && blockPosition.x < CHUNK_SIZE)
+	{
+		if (blockPosition.y >= 0 && blockPosition.y < CHUNK_SIZE)
+		{
+			if (blockPosition.z >= 0 && blockPosition.z < CHUNK_SIZE)
+			{
+				return ((CHUNK_SIZE * CHUNK_SIZE) * blockPosition.x) + (CHUNK_SIZE * blockPosition.y) + blockPosition.z;
+			}
+		}
+	}
+	return 0;
 }
