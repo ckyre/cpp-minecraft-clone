@@ -20,7 +20,6 @@ class Chunk
 		Mesh mesh;
 
 		Scene* scene;
-		unsigned short sceneChunkIndex;
 
 		vector<Vertex> CreateBlockMesh(vec3 blockPosition);
 		unsigned short GetBlockType(short int blockChunkId);
@@ -31,7 +30,7 @@ class Chunk
 		static const unsigned short CHUNK_SIZE = 16;
 		static const unsigned short BLOCK_SIZE = 2;
 
-		Chunk(vec3 _position, Scene* _scene, unsigned short _sceneChunkIndex);
+		Chunk(vec3 _position, Scene* _scene);
 		void SetBlock(vec3 blockPosition, unsigned short blockId);
 		void Update();
 		void Draw();

@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 using namespace std;
 #include "glm/glm.hpp"
 using namespace glm;
@@ -13,6 +14,8 @@ class Scene
 		vector<unsigned short> heightMap;
 		vector<Chunk> chunks;
 
+		vec3 cameraClosestChunk;
+		int GetClosestChunkCoordinate(float coordinate);
 	public:
 		static const unsigned short WORLD_SIZE = 4;
 		static Camera camera;
@@ -24,7 +27,7 @@ class Scene
 		void LoadChunk(vec3 chunkPosition);
 		void UnloadChunk(unsigned short chunkId);
 
-		unsigned short GetHeight(unsigned short chunkIndex, vec3 blockPosition);
-		unsigned short GetChunk(vec3 chunkPosition);
+		unsigned short GetHeight(vec3 blockPosition);
+		unsigned short GetChunkIndex(vec3 chunkPosition);
 };
 
