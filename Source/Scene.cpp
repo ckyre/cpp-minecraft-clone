@@ -1,35 +1,26 @@
 #include "Scene.h"
+#include "Renderer.h"
 
 Camera Scene::camera;
 
 void Scene::Start()
 {
 	CreateNoiseMap();
+	LoadAllChunks();
 }
 
 void Scene::Update()
 {
 	camera.computeMatrices();
 
-	// On camera move, load/unload chunks
-	vec3 _cameraClosestChunk = vec3(GetClosestChunkCoordinate(camera.position.x), 0, GetClosestChunkCoordinate(camera.position.z));
-	if (cameraClosestChunk != _cameraClosestChunk)
+	// Update chunks on camera move
+	int newCameraChunkPositionX = camera.position.x / (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE);
+	int newCameraChunkPositionZ = camera.position.z / (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE);
+	if (cameraChunkPositionX != newCameraChunkPositionX || cameraChunkPositionZ != newCameraChunkPositionZ)
 	{
-		cameraClosestChunk = _cameraClosestChunk;
-		//chunks.clear();
-		camera.sensivity = 0;
-		int chunkSize = (WORLD_SIZE * Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE);
-		for (int x = 0; x < WORLD_SIZE; x++)
-		{
-			for (int z = 0; z < WORLD_SIZE; z++)
-			{
-				float posX = (cameraClosestChunk.x - (chunkSize / 2) + (x * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)));
-				float posZ = (cameraClosestChunk.z - (chunkSize / 2) + (z * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)));
-				vec3 chunkPosition = vec3(posX, 0, posZ);
-				LoadChunk(chunkPosition);
-			}
-		}
-		camera.sensivity = 0.1f;
+		cameraChunkPositionX = newCameraChunkPositionX;
+		cameraChunkPositionZ = newCameraChunkPositionZ;
+		LoadAllChunks();
 	}
 
 	for (Chunk chunk : chunks)
@@ -59,6 +50,20 @@ void Scene::LoadChunk(vec3 chunkPosition)
 	chunk.Update();
 
 	chunks.push_back(chunk);
+}
+
+void Scene::LoadAllChunks()
+{
+	for (int x = -(WORLD_SIZE / 2); x < (WORLD_SIZE / 2); x++)
+	{
+		for (int z = -(WORLD_SIZE / 2); z < (WORLD_SIZE / 2); z++)
+		{
+			float posX = (cameraChunkPositionX * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)) + (x * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE));
+			float posZ = (cameraChunkPositionZ * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)) + (z * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE));
+			vec3 chunkPosition = vec3(posX, 0, posZ);
+			LoadChunk(chunkPosition);
+		}
+	}
 }
 
 void Scene::UnloadChunk(unsigned short chunkId)
@@ -94,16 +99,4 @@ unsigned short Scene::GetHeight(vec3 blockPosition)
 		}
 	}
 	return 0;
-}
-
-int Scene::GetClosestChunkCoordinate(float coordinate)
-{
-	int remainder = abs((int)coordinate) % Chunk::CHUNK_SIZE;
-	if (remainder == 0)
-		return Chunk::CHUNK_SIZE;
-
-	if (coordinate < 0)
-		return -(abs(coordinate) - remainder);
-	else
-		return coordinate + Chunk::CHUNK_SIZE - remainder;
 }

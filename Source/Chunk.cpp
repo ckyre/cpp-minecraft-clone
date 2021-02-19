@@ -12,12 +12,7 @@ Chunk::Chunk(vec3 _position, Scene* _scene) : position(_position), scene(_scene)
 			{
 				// Load blocks ids by scene height map
 				// Resuse GetHeight values ?
-				/*if (y <= scene->GetHeight(vec3(x + (position.x / BLOCK_SIZE), 0, z + (position.z / BLOCK_SIZE))))
-					blocks.push_back(1);
-				else
-					blocks.push_back(0);*/
-
-				if(y < 2)
+				if (y <= scene->GetHeight(vec3(x + (position.x / BLOCK_SIZE), 0, z + (position.z / BLOCK_SIZE))))
 					blocks.push_back(1);
 				else
 					blocks.push_back(0);
@@ -62,7 +57,7 @@ void Chunk::Update()
 	if (vertices.size() > 0)
 	{
 		mesh.Load(vertices);
-		cout << "Chunk generation duration : " << ((float)glfwGetTime() - startTime) << endl;
+		//cout << "Chunk generation duration : " << ((float)glfwGetTime() - startTime) << endl;
 	}
 }
 

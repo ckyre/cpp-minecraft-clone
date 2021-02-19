@@ -126,7 +126,7 @@ void Renderer::Clear()
 		glFrontFace(GL_CCW);
 
 		// Wireframe mode
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 }
 

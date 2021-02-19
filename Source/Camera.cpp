@@ -27,10 +27,10 @@ void Camera::computeMatrices()
 		position += right * speed * Time::deltaTime;
 	if (glfwGetKey(Renderer::window, GLFW_KEY_A) == GLFW_PRESS) // Left
 		position -= right * speed * Time::deltaTime;
-	if (glfwGetKey(Renderer::window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		position += up * speed * Time::deltaTime;
-	if (glfwGetKey(Renderer::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		position -= up * speed * Time::deltaTime;
+	if (glfwGetKey(Renderer::window, GLFW_KEY_SPACE) == GLFW_PRESS) // Up
+		position += vec3(0,1,0) * speed * Time::deltaTime;
+	if (glfwGetKey(Renderer::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) // Down
+		position -= vec3(0, 1, 0) * speed * Time::deltaTime;
 
 	// Calculate matices
 	proj = perspective(radians(fov), 4.0f / 3.0f, 0.1f, 200.0f);

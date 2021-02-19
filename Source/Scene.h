@@ -13,9 +13,8 @@ class Scene
 	private:
 		vector<unsigned short> heightMap;
 		vector<Chunk> chunks;
+		int cameraChunkPositionX, cameraChunkPositionZ;
 
-		vec3 cameraClosestChunk;
-		int GetClosestChunkCoordinate(float coordinate);
 	public:
 		static const unsigned short WORLD_SIZE = 4;
 		static Camera camera;
@@ -25,6 +24,7 @@ class Scene
 
 		void CreateNoiseMap();
 		void LoadChunk(vec3 chunkPosition);
+		void LoadAllChunks();
 		void UnloadChunk(unsigned short chunkId);
 
 		unsigned short GetHeight(vec3 blockPosition);
