@@ -6,13 +6,14 @@ using namespace glm;
 #include "Camera.h"
 #include "Chunk.h"
 #include "Random.h"
+#include "HeightMap.h"
 
 #pragma once
 class Scene
 {
 	private:
-		vector<unsigned short> heightMap;
-		vector<Chunk> chunks;
+		HeightMap heightMap;
+		vector<Chunk> visibleChunks;
 		int cameraChunkPositionX, cameraChunkPositionZ;
 
 	public:
@@ -22,12 +23,10 @@ class Scene
 		void Start();
 		void Update();
 
-		void CreateNoiseMap();
 		void LoadChunk(vec3 chunkPosition);
-		void LoadAllChunks();
-		void UnloadChunk(unsigned short chunkId);
+		void UpdateVisibleChunks();
+		void DrawVisibleChunks();
 
-		unsigned short GetHeight(vec3 blockPosition);
-		unsigned short GetChunkIndex(vec3 chunkPosition);
+		unsigned short inline GetColumnHeight(vec3 columnPosition) { return heightMap.GetColumnHeight(columnPosition); }
 };
 
