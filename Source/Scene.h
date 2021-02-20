@@ -12,13 +12,14 @@ using namespace glm;
 class Scene
 {
 	private:
-		HeightMap heightMap;
 		vector<Chunk> visibleChunks;
 		int cameraChunkPositionX, cameraChunkPositionZ;
 
 	public:
 		static const unsigned short WORLD_SIZE = 4;
 		static Camera camera;
+
+		HeightMap heightMap;
 
 		void Start();
 		void Update();
@@ -27,6 +28,5 @@ class Scene
 		void UpdateVisibleChunks();
 		void DrawVisibleChunks();
 
-		unsigned short inline GetColumnHeight(vec3 columnPosition) { return heightMap.GetColumnHeight(columnPosition); }
 };
 

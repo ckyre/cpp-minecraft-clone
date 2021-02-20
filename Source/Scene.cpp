@@ -5,6 +5,7 @@ Camera Scene::camera;
 
 void Scene::Start()
 {
+	heightMap.CreateHeightMap(12345);
 	UpdateVisibleChunks();
 }
 

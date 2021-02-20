@@ -2,16 +2,21 @@
 using namespace std;
 #include "glm/glm.hpp"
 using namespace glm;
+#include "PerlinNoise.hpp"
+using namespace siv;
 
 #pragma once
 class HeightMap
 {
 	private:
-		vector<unsigned short> heightValues;
+		PerlinNoise noise;
+
+		const double frequency = 8.0;
+		const int32_t octaves = 8;
 
 	public:
-		void UpdateHeightMap(vec3 cameraPosition);
-		unsigned short GetColumnHeight(vec3 columnPosition);
+		void CreateHeightMap(uint32_t seed);
+		double GetColumnHeight(vec3 columnPosition);
 
 };
 

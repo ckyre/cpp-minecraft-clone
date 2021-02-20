@@ -1,26 +1,20 @@
 #include "HeightMap.h"
 #include "Chunk.h"
 #include "Scene.h"
+# include <cassert>
+# include <iostream>
+# include <fstream>
+# include <sstream>
 
-void HeightMap::UpdateHeightMap(vec3 cameraPosition)
+void HeightMap::CreateHeightMap(uint32_t seed)
 {
-	heightValues.clear();
-	for (unsigned short i = 0; i < ((Chunk::CHUNK_SIZE * Scene::WORLD_SIZE) * (Chunk::CHUNK_SIZE * Scene::WORLD_SIZE)); i++)
-	{
-		heightValues.push_back(Random::Range(0, 15));
-	}
+	PerlinNoise _noise(seed);
+	noise = _noise;
 }
 
-unsigned short HeightMap::GetColumnHeight(vec3 columnPosition)
+double HeightMap::GetColumnHeight(vec3 columnPosition)
 {
-	if (columnPosition.x >= 0 && columnPosition.x < (Chunk::CHUNK_SIZE * Scene::WORLD_SIZE))
-	{
-		if (columnPosition.z >= 0 && columnPosition.z < (Chunk::CHUNK_SIZE * Scene::WORLD_SIZE))
-		{
-			unsigned short index = columnPosition.x * (Chunk::CHUNK_SIZE * Scene::WORLD_SIZE) + columnPosition.z;
-			if (index >= 0 && index < heightValues.size())
-				return heightValues[index];
-		}
-	}
-	return 0;
+	double value = noise.accumulatedOctaveNoise2D_0_1(columnPosition.x, columnPosition.z, octaves) * 16;
+	cout << value << endl;
+	return value;
 }
