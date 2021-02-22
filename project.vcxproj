@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\PerlinNoise;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\stb_image\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\stb_image\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\PerlinNoise;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\stb_image\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\stb_image\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -164,6 +164,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\SimplexNoise.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Time.cpp" />
     <ClCompile Include="Source\Vertex.cpp" />
@@ -835,6 +836,7 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\SimplexNoise.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Time.h" />
     <ClInclude Include="Source\Vertex.h" />

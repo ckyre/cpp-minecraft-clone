@@ -1,22 +1,22 @@
 #include <vector>
+#include <iostream>
 using namespace std;
 #include "glm/glm.hpp"
 using namespace glm;
-#include "PerlinNoise.hpp"
-using namespace siv;
+#include "SimplexNoise.h"
 
 #pragma once
 class HeightMap
 {
 	private:
-		PerlinNoise noise;
+		SimplexNoise noise;
 
-		const double frequency = 8.0;
-		const int32_t octaves = 8;
+		const double frequency = 0.01;
+		const int octaves = 8;
 
 	public:
-		void CreateHeightMap(uint32_t seed);
-		double GetColumnHeight(vec3 columnPosition);
+		void CreateNoise();
+		float GetColumnHeight(vec3 columnPosition);
 
 };
 
