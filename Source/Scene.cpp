@@ -6,7 +6,18 @@ Camera Scene::camera;
 void Scene::Start()
 {
 	heightMap.CreateNoise();
-	UpdateVisibleChunks();
+	
+	// Update visible chunks
+	for (int x = -(WORLD_SIZE / 2); x < (WORLD_SIZE / 2); x++)
+	{
+		for (int z = -(WORLD_SIZE / 2); z < (WORLD_SIZE / 2); z++)
+		{
+			float posX = (cameraChunkPositionX * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)) + (x * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE));
+			float posZ = (cameraChunkPositionZ * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE)) + (z * (Chunk::CHUNK_SIZE * Chunk::BLOCK_SIZE));
+			vec3 chunkPosition = vec3(posX, 0, posZ);
+			LoadChunk(chunkPosition);
+		}
+	}
 }
 
 void Scene::Update()
