@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Chunk.h"
 #include "Renderer.h"
+#include <stdlib.h>
 
 Chunk::Chunk(vec3 _position, Scene* _scene) : position(_position), scene(_scene)
 {
@@ -11,7 +12,7 @@ Chunk::Chunk(vec3 _position, Scene* _scene) : position(_position), scene(_scene)
 			for (int z = 0; z < CHUNK_SIZE; z++)
 			{
 				// Load blocks ids by scene height map | Resuse GetHeight values ?
-				if (y <= scene->heightMap.GetColumnHeight(vec3(x,y,z)))
+				if (y <= scene->heightMap.GetColumnHeight(vec3(position.x + x, 0, position.z + z)))
 					blocks.push_back(1);
 				else
 					blocks.push_back(0);
