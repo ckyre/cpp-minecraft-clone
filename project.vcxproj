@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Bloc.cpp" />
     <ClCompile Include="Source\HeightMap.cpp" />
     <ClCompile Include="Source\Random.cpp" />
     <ClCompile Include="Source\Chunk.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Source\VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Bloc.h" />
     <ClInclude Include="Dependencies\glm\glm\common.hpp" />
     <ClInclude Include="Dependencies\glm\glm\detail\compute_common.hpp" />
     <ClInclude Include="Dependencies\glm\glm\detail\compute_vector_relational.hpp" />

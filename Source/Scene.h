@@ -16,7 +16,7 @@ class Scene
 		int cameraChunkPositionX, cameraChunkPositionZ;
 
 	public:
-		static const unsigned short WORLD_SIZE = 4;
+		static const unsigned short WORLD_SIZE = 8;
 		static Camera camera;
 
 		HeightMap heightMap;

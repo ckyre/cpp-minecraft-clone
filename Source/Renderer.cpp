@@ -88,11 +88,11 @@ void Renderer::LoadDefaultResources()
 
 	// Default shader
 	Texture texture;
-	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/bricks.bmp");
+	texture.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Assets/Textures/atlas.bmp");
 
 	Shader shader;
 	shader.Load("E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/vDefault.glsl",
-		"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
+				"E:/Documents/Projets/Programmes/opengl/cpp-minecraft-clone/Source/Shaders/fDefault.glsl");
 	shader.UniformTexture(texture);
 	Renderer::defaultShader = shader;
 
